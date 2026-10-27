@@ -26,6 +26,8 @@ claude plugin install workflow@pluneto-skills --scope project   # or --scope loc
 
 Private repo: Claude Code fetches with non-interactive git, so HTTPS needs the gh credential helper (`gh auth setup-git`).
 
+Machines that log in to GitHub as another account (the T3 box, CT 109, as PlunetoD) read this repo through a **read-only deploy key** plus a git `insteadOf` rule, since personal repos can't have read-only collaborators. Headless Claude there doesn't install plugins a repo enables, so the box runs `sync-repo-plugins` hourly. Details: cortana `runbooks/t3-box.md` → "Plugins (pluneto-skills)".
+
 ## Edit a skill
 
 1. Edit `plugins/<plugin>/skills/<skill>/SKILL.md` (copy files in; symlinks are rejected).
