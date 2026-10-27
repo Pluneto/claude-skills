@@ -55,3 +55,11 @@ plugin      mattpocock-skills@claude-plugins-official          ~1651 tok
 ```
 
 Baseline ~7614 → ~3794 tokens (−50%). The 9 migrated skills still synced from claude.ai account for ~1341 of the remainder; once they are deleted in claude.ai, expect ~2450 tokens (−68%). Re-run `scripts/measure-context` to confirm.
+
+## After claude.ai deletions (2026-10-27)
+
+```
+16 entries, ~2724 tokens always-on
+```
+
+Baseline ~7614 → ~2724 tokens (−64%). user-types and tool-for-users still sync from claude.ai (now also in the `ux` plugin); deleting them there removes a few hundred more.
