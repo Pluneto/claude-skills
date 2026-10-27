@@ -15,7 +15,7 @@ Confirm **plan-this**, **build-this** and **research-this** are available (they 
 ## 1. Plan
 
 Run /plan-this with these changes:
-- Answer every question yourself: take the recommended option and record it as an *autopilot default*. Research facts instead of guessing, using plan-this's research-this calls (take its verdict as the recommended option, and note its Gaps as assumptions); use a marked placeholder for anything only the user knows.
+- Answer every question yourself: take the recommended option and record it as an *autopilot default*. Research facts instead of guessing, using plan-this's research-this calls at the depth plan-this sets, without adding runs of your own (take its verdict as the recommended option, and note its Gaps as assumptions); use a marked placeholder for anything only the user knows.
 - Let plan-this's skills step run as written: it asks nothing, so it needs no change. The skills it picks end up in the plan.
 - Skip all approval, confirmation and next-step questions. Save the plan file and go straight to building.
 - Ask a question only once, up front, and only if the goal has two readings that lead to completely different work. Otherwise state your reading in one line.
