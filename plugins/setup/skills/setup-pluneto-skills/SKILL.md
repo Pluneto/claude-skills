@@ -23,7 +23,7 @@ Both modes inspect first, show findings, and write only after the user confirms 
    - For each chosen plugin: `claude plugin install <plugin>@pluneto-skills --scope project`.
    - If `workflow` is chosen: create `plans/archive/` with an empty `plans/archive/.gitkeep` (plan-this saves to `plans/`, build-this archives to `plans/archive/`).
    - Write the CLAUDE.md block (template below).
-5. **Verify.** Run every repair check. Done when all pass; then tell the user to run `/reload-plugins` (or restart) so the new skills load.
+5. **Verify.** Run every repair check. Done when all pass; then tell the user to run `/reload-plugins` (or restart) so the new skills load. User-invoked skills (this one, `workflow:handoff`) never appear in the model's skill list, so judge installs by `claude plugin list --json`, not by that list.
 
 ## Repair
 
