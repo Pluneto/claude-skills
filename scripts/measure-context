@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+"""Estimate the always-on skill context of a session outside any project.
+
+Counts user skills (~/.claude/skills), claude.ai synced skills and user-scope
+plugins. Skill cost is (name + description) / 4 tokens, skipping skills with
+disable-model-invocation; plugin cost comes from `claude plugin details`.
+"""
+import json
+import re
+import subprocess
+from pathlib import Path
+
+CLAUDE = Path.home() / ".claude"
+FRONTMATTER = re.compile(r"\A---\n(.*?)\n---\n", re.S)
+
+
+def skill_cost(skill_md):
+    match = FRONTMATTER.match(skill_md.read_text(encoding="utf-8"))
+    meta = match.group(1) if match else ""
+    if re.search(r"^disable-model-invocation:\s*true", meta, re.M):
+        return 0
+    # A key's value runs on through indented continuation lines (YAML > and | blocks).
+    name = re.search(r"^name:(.*(?:\n[ \t].*)*)", meta, re.M)
+    desc = re.search(r"^description:(.*(?:\n[ \t].*)*)", meta, re.M)
+    text = (name.group(1) if name else "") + (desc.group(1) if desc else "")
+    return round(len(" ".join(text.split())) / 4)
+
+
+def user_scope_plugins():
+    settings = json.loads((CLAUDE / "settings.json").read_text())
+    installed = json.loads((CLAUDE / "plugins" / "installed_plugins.json").read_text())["plugins"]
+    for plugin_id, enabled in settings.get("enabledPlugins", {}).items():
+        if enabled and any(i["scope"] == "user" for i in installed.get(plugin_id, [])):
+            yield plugin_id
+
+
+def plugin_cost(plugin_id):
+    out = subprocess.run(["claude", "plugin", "details", plugin_id], capture_output=True, text=True).stdout
+    match = re.search(r"Always-on:\s*~?([\d,]+)", out)
+    return int(match.group(1).replace(",", "")) if match else 0
+
+
+def main():
+    rows = []
+    for skill_md in sorted((CLAUDE / "skills").glob("*/SKILL.md")):
+        rows.append(("user skill", skill_md.parent.name, skill_cost(skill_md)))
+    for skill_md in sorted((CLAUDE / "skills" / "synced").glob("*/*/SKILL.md")):
+        rows.append(("claude.ai", skill_md.parent.name, skill_cost(skill_md)))
+    for plugin_id in user_scope_plugins():
+        rows.append(("plugin", plugin_id, plugin_cost(plugin_id)))
+    for kind, name, cost in rows:
+        print(f"{kind:<11} {name:<50} ~{cost} tok")
+    print(f"\n{len(rows)} entries, ~{sum(r[2] for r in rows)} tokens always-on")
+
+
+if __name__ == "__main__":
+    main()

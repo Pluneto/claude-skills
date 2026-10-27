@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+"""Run `claude plugin validate --strict` on the marketplace and every plugin.
+
+Same as --strict, except the "No version specified" warning is allowed:
+plugins omit `version` on purpose so updates follow git commits.
+"""
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+
+
+def problems(report):
+    sections = [report.get("manifest") or {}] + list(report.get("contents") or [])
+    for section in sections:
+        for err in section.get("errors", []):
+            yield f"error   {err.get('path', '')}: {err['message']}"
+        for warn in section.get("warnings", []):
+            if warn.get("path", "").endswith("version") and warn["message"].startswith("No version specified"):
+                continue
+            yield f"warning {warn.get('path', '')}: {warn['message']}"
+
+
+def main():
+    targets = [ROOT] + sorted(p for p in (ROOT / "plugins").glob("*") if p.is_dir())
+    failed = False
+    for target in targets:
+        out = subprocess.run(["claude", "plugin", "validate", "--json", str(target)],
+                             capture_output=True, text=True).stdout
+        found = list(problems(json.loads(out)))
+        if found:
+            failed = True
+            print(f"{target.relative_to(ROOT) or '.'}:\n  " + "\n  ".join(found), file=sys.stderr)
+    print("validate: " + ("FAILED" if failed else f"ok ({len(targets)} targets)"))
+    return 1 if failed else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

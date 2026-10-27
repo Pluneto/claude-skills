@@ -1,0 +1,24 @@
+{
+  "name": "pluneto-skills",
+  "owner": {
+    "name": "Pluneto"
+  },
+  "description": "Pluneto's own Claude Code skills, installable per project.",
+  "plugins": [
+    {
+      "name": "design",
+      "source": "./plugins/design",
+      "description": "Design reviews: backend-design-review and dashboard-design."
+    },
+    {
+      "name": "skill-tools",
+      "source": "./plugins/skill-tools",
+      "description": "Maintain skills: end-of-session reflect retro, skill-updater and skill-ozempic."
+    },
+    {
+      "name": "workflow",
+      "source": "./plugins/workflow",
+      "description": "Plan, build, solve and research goals end to end (plan-this, build-this, solve-this, research-this, use-available-skills) plus handoff."
+    }
+  ]
+}
