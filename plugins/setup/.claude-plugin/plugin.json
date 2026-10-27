@@ -1,0 +1,5 @@
+{
+  "name": "setup",
+  "description": "Set up or repair the pluneto-skills plugins in a repo (/setup:setup-pluneto-skills). Install once at user scope.",
+  "author": { "name": "Pluneto" }
+}

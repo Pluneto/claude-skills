@@ -1,6 +1,6 @@
 ---
 name: "skill-updater"
-description: Update or modify an existing skill, and nothing else. Use whenever the user wants to change, fix, tighten, extend, or refactor a skill that already exists (e.g. "update the X skill", "the skill got Y wrong, fix it", "add this lesson to the skill"), and whenever /reflect or a retro has a skill edit to apply. Handles both skills installed in claude.ai (returns a same-name .skill file to upload) and skills that live in a repository (edits them in place). Does not create new skills (use skill-creator) and never runs benchmarks, evals, or description-optimization loops.
+description: Update or modify an existing skill, and nothing else. Use whenever the user wants to change, fix, tighten, extend, or refactor a skill that already exists (e.g. "update the X skill", "the skill got Y wrong, fix it", "add this lesson to the skill"), and whenever /reflect or a retro has a skill edit to apply. Handles skills installed in claude.ai (returns a same-name .skill file to upload), skills from a plugin marketplace whose source repo is cloned locally (edits the source, commits and pushes), and skills that live in a repository (edits them in place). Does not create new skills (use skill-creator) and never runs benchmarks, evals, or description-optimization loops.
 ---
 
 # Skill Updater
@@ -9,7 +9,7 @@ A narrow sibling of skill-creator for one job: changing a skill that already exi
 
 ## Principle: general-purpose but specialised
 
-Skills in claude.ai are reused across many different requests, so an edit must make the skill better for the whole class of tasks it covers, not for the one session that exposed the problem. Before writing anything, restate the lesson in general terms ("when X kind of input appears, do Y because Z") and ask whether it still holds with the specifics of this session removed. If it only holds for one project, one file name, or one phrasing, it belongs in project notes or memory, not in the skill. Say so and propose that instead.
+Skills are reused across many different requests, so an edit must make the skill better for the whole class of tasks it covers, not for the one session that exposed the problem. Before writing anything, restate the lesson in general terms ("when X kind of input appears, do Y because Z") and ask whether it still holds with the specifics of this session removed. If it only holds for one project, one file name, or one phrasing, it belongs in project notes or memory, not in the skill. Say so and propose that instead.
 
 A skill should stay specialised: it has a clear domain and a trigger description that matches it. Don't widen the domain to absorb an unrelated lesson. Suggest a separate skill rather than bloating this one.
 
@@ -25,8 +25,9 @@ Get the target skill's name and the change wanted. Sources: the user's request, 
 
 ### 2. Find where the skill lives
 
-Check both places before deciding how to deliver:
+Check all three places before deciding how to deliver:
 
+- **Marketplace skill**: a plugin skill (listed as `plugin:skill`) whose marketplace source repo is cloned locally. Pluneto's own skills live in `~/projects/claude-skills/plugins/<plugin>/skills/<name>/` (marketplace `pluneto-skills`). The installed copy under `~/.claude/plugins/cache/` is a read-only cache; edit the source.
 - **Repository skill**: a skill folder in the working project that is writable (typically `.claude/skills/<name>/` or a `skills/` directory). Search with Glob for `**/<name>/SKILL.md`.
 - **Cloud skill**: a skill installed in claude.ai. Its files are read-only here (for example under `/mnt/skills/` or an uploads folder), or it is only known by name from the skills list.
 
@@ -34,6 +35,7 @@ Delivery follows from this:
 
 | Where it exists | What to do |
 |---|---|
+| Marketplace source repo (wins over any claude.ai copy, which is then stale) | `git pull`, edit it in the source repo, commit to `main` and push (step 6). |
 | Cloud (claude.ai), with or without a repo copy | Edit a working copy and deliver a downloadable `.skill` file (step 5). If a repo copy also exists, apply the same edit there directly so the two don't drift. |
 | Repository only | Edit it in place yourself. No `.skill` file needed. Don't commit or push unless asked. |
 | Neither found | Say so and ask where the skill is, or whether the user wants a new skill (that is skill-creator's job). |
@@ -70,6 +72,8 @@ If the user explicitly asks for real test runs, hand off to skill-creator.
 3. The file must be named `<original-name>.skill`, exactly the previous skill's name, so uploading it replaces the old version instead of creating a second one.
 4. Check the archive contains `<name>/SKILL.md` at the top level (`unzip -l`), then send the file to the user with the file-delivery tool (`SendUserFile` or `present_files`). Never hand over raw SKILL.md text in place of the packaged file.
 5. Tell the user in a line or two what changed and that they need to upload it manually in claude.ai (Settings → Capabilities → Skills), replacing the existing version. The edit isn't live until they do.
+
+**Marketplace skill:** commit only the skill's files (stage them by name) to `main` and push. The repo's pre-commit hook regenerates and validates the marketplace; if it fails, fix the cause and commit again, never `--no-verify`. Tell the user installed copies pick it up on the next auto-update, or now with `/plugin marketplace update <marketplace>` then `/reload-plugins`.
 
 **Repository-only skill:** the edit is already made; say which file changed and what changed.
 

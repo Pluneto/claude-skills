@@ -64,7 +64,7 @@ Rank what survives by expected payoff and cut from the bottom. Say plainly when 
 Do not ask for approval; the user wants less back-and-forth, and every edit is small, visible and easy to revert.
 
 - **Project notes**: edit in the file's own style, in place rather than appended wherever an existing line should change.
-- **Existing skills**: hand the edit and the evidence from this session to the skill-updater skill, which makes the change and delivers it the right way (a same-name `.skill` file for skills installed in claude.ai, an in-place edit for repository skills). It applies the edit without asking.
+- **Existing skills**: hand the edit and the evidence from this session to the skill-updater skill, which makes the change and delivers it the right way (a commit and push to the source repo for plugin marketplace skills, a same-name `.skill` file for skills installed in claude.ai, an in-place edit for repository skills). It applies the edit without asking.
 - **New skills**: hand the proposal and its evidence to the skill-creator skill, which builds it as a repository skill. The evidence answers its intent questions, so it can go straight to drafting.
 
 If the user names a change they do not want, or says something is wrong, revise it and apply the revision.
