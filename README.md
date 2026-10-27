@@ -16,7 +16,7 @@ A Claude Code plugin marketplace with Pluneto's own skills: plan-then-build work
 
 ```bash
 # once per machine
-claude plugin marketplace add Pluneto/claude-skills
+claude plugin marketplace add Pluneto/skills
 claude plugin install setup@pluneto-skills --scope user
 
 # per repo
@@ -24,7 +24,7 @@ claude plugin install workflow@pluneto-skills --scope project   # or --scope loc
 # then in Claude Code: /setup:setup-pluneto-skills   (setup or repair)
 ```
 
-Inside a session the same works as `/plugin marketplace add Pluneto/claude-skills`. No GitHub credentials are needed; on a machine without a GitHub SSH key, set `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1` if adding fails.
+Inside a session the same works as `/plugin marketplace add Pluneto/skills`. No GitHub credentials are needed; on a machine without a GitHub SSH key, set `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1` if adding fails.
 
 **Updates:** plugins have no `version` field, so an update brings you to the latest commit. Auto-update is off for third-party marketplaces: turn it on in `/plugin` → Marketplaces → pluneto-skills → Enable auto-update, or run `claude plugin marketplace update pluneto-skills` now and then.
 
