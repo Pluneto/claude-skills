@@ -21,6 +21,11 @@
       "description": "Maintain skills: end-of-session reflect retro, skill-updater and skill-ozempic."
     },
     {
+      "name": "ux",
+      "source": "./plugins/ux",
+      "description": "UX analysis: user-types (UX/User_Types.md with MoSCoW requirements) and tool-for-users (feature-to-user mapping and journeys in UX/tools/)."
+    },
+    {
       "name": "workflow",
       "source": "./plugins/workflow",
       "description": "Plan, build, solve and research goals end to end (plan-this, build-this, solve-this, research-this, use-available-skills) plus handoff."

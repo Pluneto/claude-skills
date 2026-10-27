@@ -9,6 +9,7 @@ Pluneto's own Claude Code skills, published as a private plugin marketplace. Thi
 | `workflow` | plan-this, build-this, solve-this, research-this, use-available-skills, handoff | per project |
 | `skill-tools` | reflect, skill-updater, skill-ozempic | per project |
 | `design` | backend-design-review, dashboard-design | per project |
+| `ux` | user-types, tool-for-users | per project |
 | `setup` | setup-pluneto-skills (`/setup:setup-pluneto-skills`, user-invoked only) | user scope, once per machine |
 
 ## Use
