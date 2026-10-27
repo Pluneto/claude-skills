@@ -40,20 +40,4 @@ Work through the mapped user-types in ID order. For each type, take its intents 
 
 ## Journey details
 
-Write a details section for each main journey, in the format shown in file-format.md:
-
-- One row each for Intent and Arrival.
-- One **Use** row per feature in the path, saying what the user does and sees.
-- One row for After.
-- A closing `Variants:` line that lists the variant IDs, each with a one-phrase difference.
-
-Variants get no section of their own. Their index row is their full description, which keeps the document readable as the number of variants grows.
-
-## Before finishing
-
-`ux.py check` tests all of the following. If one fails, fix the cause; don't paper over it.
-
-- Every mapped user-type has at least one main journey.
-- Every feature appears in at least one path. If one doesn't, either a journey is missing or the feature isn't needed.
-- Every user-type marked P on a feature uses that feature in at least one of its journeys.
-- No journey uses a feature its user-type isn't mapped to. If one does, the journey or the map is wrong.
+Write a details section for each main journey, in the format shown in file-format.md. Variants get no section of their own; their index row is their full description.

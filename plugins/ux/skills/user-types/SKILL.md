@@ -1,6 +1,6 @@
 ---
 name: user-types
-description: Create or maintain UX/User_Types.md, a repository's list of user-types (role + goal), each with a profile and MoSCoW requirements, plus the tool features each type is mapped to. Use whenever the user wants to define, list, add, edit, review or rebuild user-types, user roles, personas, target users or audiences for a repo or product, or runs /user-types. Also use it when another skill such as tool-for-users needs UX/User_Types.md and the file is missing or lacks a user-type.
+description: Create or maintain UX/User_Types.md, a repository's list of user-types (role + goal), each with a profile and MoSCoW requirements. Use whenever the user wants to define, list, add, edit, review or rebuild user-types, user roles, personas, target users or audiences for a repo or product, or runs /user-types. Also use it when another skill such as tool-for-users needs UX/User_Types.md and the file is missing or lacks a user-type.
 ---
 
 # User types
@@ -11,21 +11,11 @@ A user-type is a **role + goal**: what someone is allowed to do, combined with w
 
 ## What's in this skill
 
-- `references/file-format.md`: the exact format of `UX/User_Types.md` and the tool docs. Read it before writing anything.
-- `references/glossary.md`: the internal glossary of about 30 generic user-types, grouped by product kind. Every profile starts from it.
-- `scripts/ux.py`: a deterministic helper. Run it from the repo root as `python3 <this skill's folder>/scripts/ux.py <command>`, using the base directory shown when this skill loaded.
-  - `status`: what exists, the types, the next free ID, and git state.
-  - `scan`: repo evidence about user-types.
-  - `init [--force]`: create the file from the template.
-  - `refs UT-NN …`: which tool docs use a type.
-  - `sync`: regenerate the index and mapped-features blocks.
-  - `check`: validate the files.
-
-Prefer the helper over working these things out by hand. It gives the same answer every time, which is the point of this skill. If Python isn't available, do the same steps by hand, following file-format.md.
+Read `references/file-format.md` before writing anything, and `references/glossary.md` (about 30 generic user-types by product kind) before drafting, since every profile starts from it. Run the helper from the repo root as `python3 <this skill's base directory>/scripts/ux.py <command>` (`--help` lists the commands). Without Python, follow file-format.md by hand.
 
 ## Asking the user
 
-Ask every choice named below with a multiple-choice question card (AskUserQuestion: up to 4 questions per card, 2 to 4 options each; the user can always type their own answer). If that tool isn't available, ask as a numbered list and wait for the reply. These choices belong to the user, so don't make them yourself, even when one option looks obvious.
+Ask each named choice with AskUserQuestion (a numbered list if it's unavailable). These choices are the user's; don't make them yourself, even when one looks obvious.
 
 ## Step 0: Where are we?
 
@@ -55,7 +45,7 @@ Tell the user there is no `UX/User_Types.md` yet, then ask how to make it:
 
 ### Option B: glossary only
 
-1. Ask which product kinds apply, as a multi-select of the glossary groups. CORE is always included. The card has a 4-option limit, so offer the four likeliest groups and let "Other" cover the rest.
+1. Ask which product kinds apply, as a multi-select of the glossary groups. CORE is always included.
 2. Candidates are the CORE ★ entries plus every entry in the chosen groups.
 3. Go to Drafting. The Review step is where the user drops the ones that don't apply.
 
@@ -106,10 +96,7 @@ Start from the glossary entry and adjust it to what the repo or the user says. S
 
 - **Description:** 1 or 2 sentences on who they are and why they come, in this product's own terms.
 - **Goals:** 2 to 4 bullets.
-- **Access level:** one of Anonymous, Signed-in, Elevated, Admin, System.
-- **Contexts:** the contexts that apply, chosen from the list in file-format.md, separated by `;`.
-- **Based on:** a glossary ID and name, or `None (written fresh)`.
-- **Evidence:** `path:line` references, or `User-specified`, or `Glossary only`.
+- **Access level, Contexts, Based on and Evidence:** as in file-format.md.
 - **Requirements (MoSCoW):**
   - Counts: Must 3–5, Should 2–4, Could 1–3, Won't 1–2.
   - Phrase each as a need a feature could satisfy ("Can see which events still have places"), not as a feature spec ("Event list with capacity badge"). Needs survive design changes; specs don't.

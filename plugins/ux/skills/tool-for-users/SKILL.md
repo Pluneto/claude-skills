@@ -1,36 +1,19 @@
 ---
 name: tool-for-users
-description: Analyse a requested tool, page or feature set for a repository and who it is for. It breaks the tool into features, maps each feature to the user-types in UX/User_Types.md, checks their Must-requirements are covered, and maps every variation of each user's journey (intent, arrival, use, after) into a UX/tools/ doc with tables and Mermaid flows. Use whenever the user runs /tool-for-users or asks who will use something they plan to build, for user journeys or user flows, feature-to-user mapping, or a UX breakdown of a planned tool or feature, even if they don't name this skill.
+description: Analyse a requested tool, page or feature set for a repository and who it is for. It breaks the tool into features, maps each feature to the user-types in UX/User_Types.md, checks their Must-requirements are covered, and maps each user's journeys into a UX/tools/ doc. Use whenever the user runs /tool-for-users or asks who will use something they plan to build, for user journeys or user flows, feature-to-user mapping, or a UX breakdown of a planned tool or feature, even if they don't name this skill.
 ---
 
 # Tool for users
 
-Turns a requested tool into `UX/tools/<slug>.md`, which records:
-
-- what the tool is;
-- its features;
-- which user-types use each feature;
-- which of their Must-requirements are covered;
-- every variation of each user's journey: intent → arrival → use → after.
-
-User-types live in `UX/User_Types.md`, which belongs to the **user-types** skill. This skill reads that file but never adds or invents types itself. Missing types are created through user-types, so every profile is built and reviewed the same way.
+Turns a requested tool into `UX/tools/<slug>.md`. User-types live in `UX/User_Types.md`, owned by the **user-types** skill.
 
 ## What's in this skill
 
-- `references/file-format.md` gives the exact format of both files. Read it before writing anything.
-- `references/journey-dimensions.md` gives the fixed procedure for enumerating journeys. Read it at Step 6.
-- `scripts/ux.py` is a deterministic helper. Run it from the repo root as `python3 <this skill's folder>/scripts/ux.py <command>`, where the folder is the base directory shown when this skill loaded. Its commands are:
-  - `status`: what exists, plus the next free IDs
-  - `init-tool SLUG "Name"`: create the tool doc
-  - `check [SLUG]`: errors, coverage gaps and warnings
-  - `sync`: generate the Mermaid flows and the mapped-features lists
-  - `refs`: which tool docs use a user-type
-
-Prefer the helper to working these things out yourself. It gives the same answer every time. If Python isn't available, follow file-format.md by hand.
+Read `references/file-format.md` before writing anything, and `references/journey-dimensions.md` at Step 6. Run the helper from the repo root as `python3 <this skill's base directory>/scripts/ux.py <command>` (`--help` lists the commands). Without Python, follow file-format.md by hand.
 
 ## Asking the user
 
-Ask every choice named below with a multiple-choice question card (AskUserQuestion: up to 4 questions per card, 2–4 options each; the user can always type their own answer). If that tool isn't available, ask as a numbered list and wait for the reply.
+Ask each named choice with AskUserQuestion (a numbered list if it's unavailable). These choices are the user's; don't make them yourself, even when one looks obvious.
 
 ## Step 0: User-types
 

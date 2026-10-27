@@ -1,21 +1,5 @@
 # User-type glossary
 
-Generic user-types to base profiles on. Each type is a **role + goal**: what someone is allowed to do, combined with why they come. Situations such as phone use, screen readers or a first visit are *contexts*, listed per entry, not separate types.
-
-Use an entry as a starting point, then rewrite it in the product's own terms. The repo or the user always beats the glossary.
-
-## Contents
-
-- Choosing groups
-- Telling similar types apart
-- CORE: every product (G-COR-01 to 05)
-- PUB: public, marketing and content sites (G-PUB-01 to 04)
-- COM: communities, clubs and memberships (G-COM-01 to 05)
-- SHP: online shops (G-SHP-01 to 04)
-- SAS: SaaS and B2B software (G-SAS-01 to 06)
-- MKT: marketplaces and booking platforms (G-MKT-01 to 03)
-- INT: internal tools (G-INT-01 to 04)
-
 ## Choosing groups
 
 | The product… | Groups |
@@ -39,14 +23,12 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Moderator vs Trust & safety reviewer:** Moderator keeps community conversations healthy; Trust & safety reviewer checks listings, accounts and transactions for fraud and rule-breaking.
 - **Organiser vs Committee member:** Organiser runs specific events or activities; Committee member governs the association (membership, finances, decisions).
 - **Operator vs Approver:** Operator does the work in the tool; Approver signs off on what operators prepared.
-- Two candidates with the same access level and the same goals are one type. Merge them.
 
 ---
 
 ## CORE: every product
 
 ### G-COR-01 · Anonymous visitor ★
-- **Also called:** guest, public visitor, site visitor
 - **Who:** Someone who is not signed in, often on a first visit, arriving from search, a shared link or word of mouth.
 - **Goals:** understand what this is and who it's for; find one specific piece of information; decide whether to go further.
 - **Access level:** Anonymous
@@ -58,7 +40,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** be forced to create an account to read public content.
 
 ### G-COR-02 · Registered user
-- **Also called:** user, account holder, signed-in user
 - **Who:** Someone with an account who is not defined by a more specific role. Use only when no Member, Customer or Team member type fits.
 - **Goals:** get back to their own data quickly; manage their account.
 - **Access level:** Signed-in
@@ -70,7 +51,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** see other users' private data.
 
 ### G-COR-03 · Administrator ★
-- **Also called:** admin, superuser, staff, operator, owner (technical)
 - **Who:** The person or small team who configures and runs the whole product, often the developer or the client's technical contact.
 - **Goals:** keep the product running and its content correct; manage users and permissions; fix problems fast.
 - **Access level:** Admin
@@ -82,7 +62,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** read secrets or passwords in plain text.
 
 ### G-COR-04 · Support agent
-- **Also called:** helpdesk, customer service, support staff
 - **Who:** Staff who answer questions and resolve problems on behalf of users.
 - **Goals:** understand a user's problem quickly; fix it or route it; keep the user informed.
 - **Access level:** Elevated
@@ -94,7 +73,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** change a user's data without leaving a trace.
 
 ### G-COR-05 · External system
-- **Also called:** integration, webhook consumer, scheduled job, bot
 - **Who:** A non-human actor that reads or writes data on someone's behalf: a payment provider's webhook, a Discord bot, a nightly import.
 - **Goals:** exchange data reliably and predictably.
 - **Access level:** System
@@ -111,7 +89,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 ## PUB: public, marketing and content sites
 
 ### G-PUB-01 · Prospect
-- **Also called:** lead, potential client, evaluator
 - **Who:** A visitor weighing whether to hire, buy from or contact the organisation.
 - **Goals:** judge fit and quality; compare with alternatives; get in touch with minimal effort.
 - **Access level:** Anonymous
@@ -123,7 +100,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** have to give more details than needed for a first contact.
 
 ### G-PUB-02 · Reader / subscriber
-- **Also called:** reader, follower, newsletter subscriber
 - **Who:** Someone who comes for content (articles, news, docs, updates) and may subscribe to get more.
 - **Goals:** read or find content; follow new content without checking manually.
 - **Access level:** Anonymous
@@ -135,7 +111,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** hit a paywall or signup wall for public content.
 
 ### G-PUB-03 · Content editor
-- **Also called:** author, writer, editor, communications officer
 - **Who:** Someone who writes and updates content without touching code.
 - **Goals:** publish accurate content quickly; keep existing content up to date.
 - **Access level:** Elevated
@@ -147,7 +122,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** be able to break the site layout.
 
 ### G-PUB-04 · Site owner
-- **Also called:** client, business owner
 - **Who:** The non-technical owner of a small site who edits occasionally and cares mostly about results.
 - **Goals:** keep key facts current (hours, prices, contact details); see whether the site brings in business.
 - **Access level:** Admin
@@ -163,7 +137,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 ## COM: communities, clubs and memberships
 
 ### G-COM-01 · Prospective member
-- **Also called:** applicant, interested student, would-be member
 - **Who:** Someone who wants to join or is considering joining.
 - **Goals:** find out what membership offers and costs; join with little friction.
 - **Access level:** Anonymous
@@ -175,7 +148,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** wait days without knowing whether the application went through.
 
 ### G-COM-02 · Member
-- **Also called:** member, participant, community member
 - **Who:** Someone who belongs and uses the community's events, content or conversations.
 - **Goals:** know what's happening; take part; stay connected with other members.
 - **Access level:** Signed-in
@@ -187,7 +159,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** see other members' private contact details without consent.
 
 ### G-COM-03 · Organiser
-- **Also called:** event host, activity lead, organiser
 - **Who:** A member who runs specific events or activities.
 - **Goals:** announce events well; know who is coming; communicate changes.
 - **Access level:** Elevated
@@ -199,7 +170,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** see members' data unrelated to their events.
 
 ### G-COM-04 · Moderator
-- **Also called:** mod, community manager
 - **Who:** Someone who keeps posts, comments or chats within the rules.
 - **Goals:** act on problems quickly and fairly; keep a record.
 - **Access level:** Elevated
@@ -211,7 +181,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** delete content without a trace.
 
 ### G-COM-05 · Committee member
-- **Also called:** board member, officer, treasurer, secretary
 - **Who:** Someone who governs the association: membership, money, decisions.
 - **Goals:** keep membership and records accurate; make and communicate decisions.
 - **Access level:** Admin
@@ -227,7 +196,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 ## SHP: online shops
 
 ### G-SHP-01 · Shopper
-- **Also called:** browser, visitor, potential buyer
 - **Who:** Someone looking for products, not (yet) a customer.
 - **Goals:** find the right product; compare; decide whether to buy.
 - **Access level:** Anonymous
@@ -239,7 +207,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** need an account to buy.
 
 ### G-SHP-02 · Customer
-- **Also called:** buyer, returning customer
 - **Who:** Someone who has bought and comes back to buy again or follow up an order.
 - **Goals:** check out quickly; track orders; return or reorder.
 - **Access level:** Signed-in
@@ -251,7 +218,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** be charged twice for one order.
 
 ### G-SHP-03 · Store manager
-- **Also called:** merchant, shop admin
 - **Who:** Someone who runs the catalogue, prices, stock and orders.
 - **Goals:** keep the catalogue accurate; process orders; see sales.
 - **Access level:** Admin
@@ -263,7 +229,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** see full card details.
 
 ### G-SHP-04 · Fulfilment staff
-- **Also called:** warehouse, packer, shipping
 - **Who:** Someone who picks, packs and ships orders.
 - **Goals:** know what to ship next; ship correctly; mark it done.
 - **Access level:** Elevated
@@ -279,7 +244,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 ## SAS: SaaS and B2B software
 
 ### G-SAS-01 · Trial user
-- **Also called:** evaluator, free user
 - **Who:** Someone testing whether the product solves their problem before paying.
 - **Goals:** reach the first useful result quickly; judge whether it's worth paying for.
 - **Access level:** Signed-in
@@ -291,7 +255,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** be asked for a card before seeing value (unless that's the business model).
 
 ### G-SAS-02 · Team member
-- **Also called:** end user, seat, collaborator
 - **Who:** Someone using the product daily as part of their team's work.
 - **Goals:** get their work done fast; collaborate with colleagues.
 - **Access level:** Signed-in
@@ -303,7 +266,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** see other organisations' data.
 
 ### G-SAS-03 · Workspace admin
-- **Also called:** team admin, org admin
 - **Who:** A customer-side person who manages their team's access and settings.
 - **Goals:** add and remove people; set up the workspace for the team.
 - **Access level:** Admin
@@ -315,7 +277,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** change other workspaces.
 
 ### G-SAS-04 · Billing owner
-- **Also called:** account owner, purchaser, finance contact
 - **Who:** The person responsible for paying and for the contract.
 - **Goals:** pay correctly; get invoices; control cost.
 - **Access level:** Admin
@@ -327,7 +288,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** need to contact sales for routine changes.
 
 ### G-SAS-05 · Developer / API consumer
-- **Also called:** integrator, API user
 - **Who:** A developer connecting their own systems to the product.
 - **Goals:** integrate quickly and reliably; debug when something breaks.
 - **Access level:** Signed-in
@@ -339,7 +299,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** face breaking changes without notice.
 
 ### G-SAS-06 · Invited guest
-- **Also called:** external collaborator, client viewer, guest
 - **Who:** Someone outside the organisation who was invited to see or comment on specific items.
 - **Goals:** see what was shared with them; respond; leave.
 - **Access level:** Signed-in
@@ -355,7 +314,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 ## MKT: marketplaces and booking platforms
 
 ### G-MKT-01 · Buyer / booker
-- **Also called:** guest, client, renter
 - **Who:** Someone looking to buy or book from one of many sellers or providers.
 - **Goals:** find a good match; transact safely; resolve problems.
 - **Access level:** Signed-in
@@ -367,7 +325,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** share contact or payment details directly with sellers outside the platform.
 
 ### G-MKT-02 · Seller / provider
-- **Also called:** host, vendor, freelancer
 - **Who:** Someone offering products, services or spaces through the platform.
 - **Goals:** get found; manage requests and availability; get paid.
 - **Access level:** Signed-in
@@ -379,7 +336,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** see buyers' payment details.
 
 ### G-MKT-03 · Trust & safety reviewer
-- **Also called:** reviewer, compliance agent
 - **Who:** Platform staff who check listings, accounts and transactions for fraud and rule-breaking.
 - **Goals:** catch bad actors early; resolve disputes fairly.
 - **Access level:** Elevated
@@ -395,7 +351,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 ## INT: internal tools
 
 ### G-INT-01 · Operator
-- **Also called:** staff user, clerk, agent, coordinator
 - **Who:** Staff who use the tool daily to do the organisation's work: entering, processing, scheduling.
 - **Goals:** get through their queue quickly and correctly.
 - **Access level:** Elevated
@@ -407,7 +362,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** change records outside their responsibility.
 
 ### G-INT-02 · Approver
-- **Also called:** manager, reviewer, supervisor
 - **Who:** Someone who checks and signs off on what operators prepared.
 - **Goals:** decide quickly with the right information; keep accountability.
 - **Access level:** Elevated
@@ -419,7 +373,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** be able to approve their own submissions.
 
 ### G-INT-03 · Analyst
-- **Also called:** viewer, reporting user, read-only user
 - **Who:** Someone who reads data and reports but doesn't change records.
 - **Goals:** answer questions with data; share findings.
 - **Access level:** Signed-in
@@ -431,7 +384,6 @@ A product can take several groups. A club site with a shop takes CORE + PUB + CO
 - **Won't:** edit source records.
 
 ### G-INT-04 · Auditor
-- **Also called:** compliance officer, controller
 - **Who:** Someone who verifies that processes and data handling follow the rules.
 - **Goals:** reconstruct what happened, when and by whom.
 - **Access level:** Elevated
