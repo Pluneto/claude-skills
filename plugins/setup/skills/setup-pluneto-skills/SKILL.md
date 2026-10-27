@@ -34,7 +34,7 @@ Run every check, collect the findings into one table (check, status, fix), confi
 | 1 | Marketplace registered | `pluneto-skills` in `claude plugin marketplace list --json` | `claude plugin marketplace add Pluneto/claude-skills` |
 | 2 | Marketplace current | `git -C <installLocation> rev-parse HEAD` equals `git ls-remote https://github.com/Pluneto/claude-skills HEAD` | `claude plugin marketplace update pluneto-skills` |
 | 3 | Enabled means installed (Claude Code loads nothing, silently, for a plugin enabled in settings but not installed) | Every `<id>: true` in `enabledPlugins` of `.claude/settings.json` and `.claude/settings.local.json`, any marketplace, has a `claude plugin list --json` entry with that `id` whose scope is `user` or whose `projectPath` is this repo | `claude plugin install <id> --scope project` (`--scope local` if it came from `settings.local.json`) |
-| 4 | Installed plugin current | Its `version` in `claude plugin list --json` matches the marketplace's `HEAD` (first 12 characters) | `claude plugin update <id>` |
+| 4 | Installed plugin current | For each `*@pluneto-skills` entry in `claude plugin list --json` that applies to this repo (scope `user`, or `projectPath` is this repo; ignore other projects' installs), its `version` matches the marketplace's `HEAD` (first 12 characters) | `claude plugin update <id>` |
 | 5 | No duplicate skills | For each skill in an enabled pluneto-skills plugin (folder names under its `installPath`/`skills/`), no same-named copy in `~/.claude/skills/<name>`, `~/.claude/skills/synced/*/<name>` or this repo's `.claude/skills/<name>` | User-level copy: move it to `~/.claude/skills/.trash/<YYYY-MM-DD>/`. claude.ai copy (`synced`): the user deletes it in claude.ai → Customize → Skills; it disappears at the next sync. Repo copy: report it and ask, since the repo may depend on its version |
 | 6 | Plans folders | If `workflow` is enabled: `plans/` and `plans/archive/` exist | Create `plans/archive/.gitkeep` |
 | 7 | CLAUDE.md block current | The block below exists and lists exactly the enabled pluneto-skills plugins | Write or rewrite the block |
@@ -47,7 +47,12 @@ Put it under the file's `## Agent skills` heading (create the heading at the end
 ```markdown
 ### pluneto-skills
 
-Installed here: <plugin> (<its skills, comma-separated>), one line per plugin. Plans go in `plans/`, finished ones in `plans/archive/`. Missing or stale skills: run `/setup:setup-pluneto-skills repair`.
+Installed here:
+- `<plugin>`: <its skills, comma-separated>
+
+Plans go in `plans/`, finished ones in `plans/archive/`. Missing or stale skills: run `/setup:setup-pluneto-skills repair`.
 ```
+
+One `- <plugin>` line per enabled plugin.
 
 Leave out the plans sentence when `workflow` is not enabled.
