@@ -13,8 +13,8 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 MARKETPLACE = {
     "name": "pluneto-skills",
-    "owner": {"name": "Pluneto"},
-    "description": "Pluneto's own Claude Code skills, installable per project.",
+    "owner": {"name": "Pluneto", "url": "https://github.com/Pluneto"},
+    "description": "Pluneto's Claude Code skills: plan and build workflows, skill maintenance, design and UX reviews.",
 }
 FRONTMATTER = re.compile(r"\A---\n(.*?)\n---\n", re.S)
 

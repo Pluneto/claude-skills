@@ -1,6 +1,6 @@
 # pluneto-skills
 
-Pluneto's own Claude Code skills, published as a private plugin marketplace. This repo is the source of truth: write and edit skills here, not in claude.ai.
+A Claude Code plugin marketplace with Pluneto's own skills: plan-then-build workflows, tools for maintaining skills, and design and UX reviews. Every plugin is plain Markdown instructions (plus one Python helper script, shipped in both `ux` skills): no hooks, MCP servers or binaries.
 
 ## Plugins
 
@@ -12,10 +12,10 @@ Pluneto's own Claude Code skills, published as a private plugin marketplace. Thi
 | `ux` | user-types, tool-for-users | per project |
 | `setup` | setup-pluneto-skills (`/setup:setup-pluneto-skills`, user-invoked only) | user scope, once per machine |
 
-## Use
+## Install
 
 ```bash
-# once per machine (auto-update is on via extraKnownMarketplaces in ~/.claude/settings.json)
+# once per machine
 claude plugin marketplace add Pluneto/claude-skills
 claude plugin install setup@pluneto-skills --scope user
 
@@ -24,19 +24,21 @@ claude plugin install workflow@pluneto-skills --scope project   # or --scope loc
 # then in Claude Code: /setup:setup-pluneto-skills   (setup or repair)
 ```
 
-Private repo: Claude Code fetches with non-interactive git, so HTTPS needs the gh credential helper (`gh auth setup-git`).
+Inside a session the same works as `/plugin marketplace add Pluneto/claude-skills`. No GitHub credentials are needed; on a machine without a GitHub SSH key, set `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1` if adding fails.
 
-Machines that log in to GitHub as another account (the T3 box, CT 109, as PlunetoD) read this repo through a **read-only deploy key** plus a git `insteadOf` rule, since personal repos can't have read-only collaborators. Headless Claude there doesn't install plugins a repo enables, so the box runs `sync-repo-plugins` hourly. Details: cortana `runbooks/t3-box.md` → "Plugins (pluneto-skills)".
+**Updates:** plugins have no `version` field, so an update brings you to the latest commit. Auto-update is off for third-party marketplaces: turn it on in `/plugin` → Marketplaces → pluneto-skills → Enable auto-update, or run `claude plugin marketplace update pluneto-skills` now and then.
+
+Plugins run with your permissions and skills enter Claude's context, so read what you install. These skills are built for my own setup; they work elsewhere, but some wording (paths like `~/projects/claude-skills`) assumes it.
 
 ## Edit a skill
 
 1. Edit `plugins/<plugin>/skills/<skill>/SKILL.md` (copy files in; symlinks are rejected).
 2. Commit to `main` and push. The pre-commit hook regenerates `.claude-plugin/marketplace.json` and validates everything.
-3. Installed copies update automatically (or run `/plugin marketplace update pluneto-skills`).
+3. Installed copies update on the next marketplace update.
 
-No `version` fields: updates follow the git commit SHA. New plugin: add `plugins/<name>/.claude-plugin/plugin.json` (`name`, `description`, `author`) and a `skills/` folder.
+No `version` fields: updates follow the git commit SHA. New plugin: add `plugins/<name>/.claude-plugin/plugin.json` (`name`, `description`, `author`, `license`) and a `skills/` folder.
 
-After cloning, enable the hook: `git config core.hooksPath scripts/hooks` (needs `claude` and Python 3 with PyYAML).
+After cloning, enable the hook: `git config core.hooksPath scripts/hooks` (needs `claude` and Python 3 with PyYAML). The hook also refuses commits whose author email is not a GitHub noreply address, so a personal address never lands in public history: `git config user.email <id>+<user>@users.noreply.github.com`.
 
 ## Scripts
 
@@ -44,6 +46,6 @@ After cloning, enable the hook: `git config core.hooksPath scripts/hooks` (needs
 - `scripts/validate`: `claude plugin validate --strict` on the marketplace and every plugin, allowing only the missing-version warning.
 - `scripts/measure-context`: estimates always-on skill tokens outside any project (see `docs/baseline.md`).
 
-## Licences
+## Licence
 
-`plugins/workflow/skills/handoff` is adapted from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT, notice kept in that folder). Everything else is Pluneto's own. Anthropic's source-available skills (docx, pdf, pptx, xlsx, …) are deliberately not included.
+MIT, see [LICENSE](LICENSE). `plugins/workflow/skills/handoff` is adapted from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT, its notice is kept in that folder). Anthropic's source-available skills (docx, pdf, pptx, xlsx, …) are deliberately not included.

@@ -1,9 +1,10 @@
 {
   "name": "pluneto-skills",
   "owner": {
-    "name": "Pluneto"
+    "name": "Pluneto",
+    "url": "https://github.com/Pluneto"
   },
-  "description": "Pluneto's own Claude Code skills, installable per project.",
+  "description": "Pluneto's Claude Code skills: plan and build workflows, skill maintenance, design and UX reviews.",
   "plugins": [
     {
       "name": "design",

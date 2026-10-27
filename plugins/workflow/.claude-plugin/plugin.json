@@ -1,5 +1,10 @@
 {
   "name": "workflow",
   "description": "Plan, build, solve and research goals end to end (plan-this, build-this, solve-this, research-this, use-available-skills) plus handoff.",
-  "author": { "name": "Pluneto" }
+  "author": {
+    "name": "Pluneto"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/Pluneto/claude-skills",
+  "repository": "https://github.com/Pluneto/claude-skills"
 }

@@ -3,6 +3,14 @@
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
+# The repo is public: refuse personal author emails.
+email=$(git var GIT_AUTHOR_IDENT | sed -n 's/.*<\(.*\)>.*/\1/p')
+if [[ "$email" != *@users.noreply.github.com ]]; then
+    echo "pre-commit: author email '$email' is not a GitHub noreply address." >&2
+    echo "  git config user.email <id>+<user>@users.noreply.github.com" >&2
+    exit 1
+fi
+
 scripts/build-marketplace
 git add .claude-plugin/marketplace.json
 scripts/validate

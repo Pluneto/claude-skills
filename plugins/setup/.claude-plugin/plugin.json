@@ -1,5 +1,10 @@
 {
   "name": "setup",
   "description": "Set up or repair the pluneto-skills plugins in a repo (/setup:setup-pluneto-skills). Install once at user scope.",
-  "author": { "name": "Pluneto" }
+  "author": {
+    "name": "Pluneto"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/Pluneto/claude-skills",
+  "repository": "https://github.com/Pluneto/claude-skills"
 }

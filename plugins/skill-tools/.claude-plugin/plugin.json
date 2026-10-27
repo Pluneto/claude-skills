@@ -1,5 +1,10 @@
 {
   "name": "skill-tools",
   "description": "Maintain skills: end-of-session reflect retro, skill-updater and skill-ozempic.",
-  "author": { "name": "Pluneto" }
+  "author": {
+    "name": "Pluneto"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/Pluneto/claude-skills",
+  "repository": "https://github.com/Pluneto/claude-skills"
 }

@@ -1,5 +1,10 @@
 {
   "name": "design",
   "description": "Design reviews: backend-design-review and dashboard-design.",
-  "author": { "name": "Pluneto" }
+  "author": {
+    "name": "Pluneto"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/Pluneto/claude-skills",
+  "repository": "https://github.com/Pluneto/claude-skills"
 }
