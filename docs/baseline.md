@@ -47,3 +47,11 @@ plugin      mattpocock-skills@claude-plugins-official          ~1651 tok
 
 41 entries, ~7614 tokens always-on
 ```
+
+## After cutover (2026-10-27, before the claude.ai copies are deleted)
+
+```
+23 entries, ~3794 tokens always-on
+```
+
+Baseline ~7614 → ~3794 tokens (−50%). The 9 migrated skills still synced from claude.ai account for ~1341 of the remainder; once they are deleted in claude.ai, expect ~2450 tokens (−68%). Re-run `scripts/measure-context` to confirm.
