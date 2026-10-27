@@ -5,7 +5,7 @@ description: End-of-session retrospective. Finds friction and repeated work in t
 
 # Reflect
 
-Turn this session's avoidable problems into up to five edits, of any size, and apply them, so the next session starts further ahead and needs less of the user.
+Turn this session's avoidable problems into up to five edits, of any size, and apply them (or, for pluneto plugin skills, hand the user a ready prompt), so the next session starts further ahead and needs less of the user.
 
 The more an agent can run on its own, without the user stepping in, the better. That is the lens for the whole retrospective: the best lesson is one that removes a future round-trip to the user, and reflect itself should not add one.
 
@@ -36,6 +36,7 @@ Put each note at the narrowest scope where it matters, so it only loads when rel
 For each lesson pick one target:
 
 - **existing skill**: the problem came from a skill used in this session, or the skill is the natural home for the lesson
+- **pluneto plugin skill**: an existing skill from the `pluneto-skills` marketplace (listed as `<plugin>:<skill>`). These serve many projects, so the lesson must still hold with this session's specifics removed ("when X kind of situation comes up, do Y because Z"); if it only holds here, it is a project note. The user applies it from a prompt you write (step 4)
 - **new skill**: a repeated procedure that no existing skill or note covers (criteria below)
 - **project note**: a fact, convention, command, or gotcha; the file from step 2
 - **no change**: a one-off, or already covered
@@ -64,7 +65,18 @@ Rank what survives by expected payoff and cut from the bottom. Say plainly when 
 Do not ask for approval; the user wants less back-and-forth, and every edit is small, visible and easy to revert.
 
 - **Project notes**: edit in the file's own style, in place rather than appended wherever an existing line should change.
-- **Existing skills**: hand the edit and the evidence from this session to the skill-updater skill, which makes the change and delivers it the right way (a commit and push to the source repo for plugin marketplace skills, a same-name `.skill` file for skills installed in claude.ai, an in-place edit for repository skills). It applies the edit without asking.
+- **Existing skills**: hand the edit and the evidence from this session to the skill-updater skill, which makes the change and delivers it the right way (a same-name `.skill` file for skills installed in claude.ai, an in-place edit for repository skills). It applies the edit without asking.
+- **Pluneto plugin skills**: the user runs these edits themselves, in a session of their choosing, so your output is a prompt and the plugin's files stay as they are. Read the skill's current SKILL.md (the installed copy under `~/.claude/plugins/cache/pluneto-skills/` is fine for reading), then write one prompt per skill, covering all its edits, in a fenced block the user can paste into a fresh session:
+
+  ```
+  Use the skill-updater skill to update `<plugin>:<skill>` (pluneto-skills marketplace).
+  Edit 1, section "<heading>": replace "<exact current text>" with "<new text>"
+    (or: add "<new text>" after "<exact current text>"; or: remove "<exact current text>")
+  General rule: when <kind of situation>, <do this>, because <reason>.
+  Evidence: <one or two lines on what went wrong, without project names, paths or personal data>.
+  ```
+
+  Quote the current text verbatim so skill-updater can find the spot, and make the prompt self-contained: the session that runs it has none of this context.
 - **New skills**: hand the proposal and its evidence to the skill-creator skill, which builds it as a repository skill. The evidence answers its intent questions, so it can go straight to drafting.
 
 If the user names a change they do not want, or says something is wrong, revise it and apply the revision.
@@ -75,7 +87,7 @@ Show what changed in a message the user will actually see (not narration between
 
 **Edit N: short title**
 - **Problem**: what happened, and why it will recur.
-- **Change**: target file and the exact text, as add / replace X with Y / remove.
+- **Change**: target file and the exact text, as add / replace X with Y / remove; for a pluneto plugin skill, the prompt from step 4.
 - **Net effect**: what it merges, replaces, or removes, or why a pure addition is justified.
 
 For a new skill, give its name, one-sentence scope, location, and which tests from step 3 it passed. Add one line on candidates dropped, and, for cloud skills, the file to upload. Don't repeat the explanations beyond that.
