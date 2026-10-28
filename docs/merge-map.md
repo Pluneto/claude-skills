@@ -1,6 +1,6 @@
 # Merge map: mattpocock-skills → pluneto-skills
 
-Source: mattpocock-skills **1.3.1** (MIT, (c) 2026 Matt Pocock), from `~/.claude/plugins/cache/claude-plugins-official/mattpocock-skills/1.3.1/`. Diff a later upstream release against this version to pick up improvements. The plan is `plans/archive/plan-merge-mattpocock-skills.md` in the working folder above this repo.
+Source: mattpocock-skills **1.3.1** (MIT, (c) 2026 Matt Pocock), from `~/.claude/plugins/cache/claude-plugins-official/mattpocock-skills/1.3.1/`. Diff a later upstream release against this version to pick up improvements. The plan is `plan-merge-mattpocock-skills.md` in the `plans/` folder above this clone (moved to `plans/archive/` once merged).
 
 ## Matt's skills
 
