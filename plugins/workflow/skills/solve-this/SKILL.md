@@ -28,7 +28,7 @@ Run /build-this on the plan file, choosing **build straight through** yourself a
 ## 3. Keep going until solved
 
 When a check fails or a step blocks:
-1. Read the actual error or output before changing anything. Re-running unchanged isn't a new attempt.
+1. Read the actual error or output before changing anything. Re-running unchanged isn't a new attempt. For a failing check whose cause isn't obvious, invoke the **diagnosing-bugs** skill if available (in Claude Code, call the Skill tool with `diagnosing-bugs`), in autopilot.
 2. After two failures of one approach, switch to a genuinely different one.
 3. Call something blocked only after three different approaches have failed; continue with independent milestones and revisit it once at the end.
 4. If the plan itself is wrong, amend the plan file and log it; don't restart.

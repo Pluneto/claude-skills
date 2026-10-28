@@ -24,6 +24,8 @@ This comes first because the purpose is the yardstick for every cut. If you and 
 
 ### 3. Suggest cuts
 
+First invoke the **writing-for-agents** skill (in Claude Code, call the Skill tool with `writing-for-agents`) if available: hunt its no-ops, duplication, sediment and restated identity in the description.
+
 Once the purpose is confirmed, suggest removing as much as possible while keeping that purpose working. Be bold: the user can say no, and a timid list defeats the point. Number each suggestion and order them by biggest saving first. For each one give:
 
 - **Cut:** what goes, and where it lives (section, bullet, file), with the approximate saving

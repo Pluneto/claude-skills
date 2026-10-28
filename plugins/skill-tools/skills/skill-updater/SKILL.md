@@ -1,6 +1,6 @@
 ---
 name: "skill-updater"
-description: Update or modify an existing skill, and nothing else. Use whenever the user wants to change, fix, tighten, extend, or refactor a skill that already exists (e.g. "update the X skill", "the skill got Y wrong, fix it", "add this lesson to the skill"), and whenever /reflect or a retro has a skill edit to apply. Handles skills installed in claude.ai (returns a same-name .skill file to upload), skills from a plugin marketplace whose source repo is cloned locally (edits the source, commits and pushes), and skills that live in a repository (edits them in place). Does not create new skills (use skill-creator) and never runs benchmarks, evals, or description-optimization loops.
+description: Update or modify an existing skill, and nothing else. Use whenever the user wants to change, fix, tighten, extend, or refactor a skill that already exists (e.g. "update the X skill", "the skill got Y wrong, fix it", "add this lesson to the skill"), and whenever /reflect has a skill edit to apply. Handles skills installed in claude.ai (returns a same-name .skill file to upload), skills from a plugin marketplace whose source repo is cloned locally (edits the source, commits and pushes), and skills that live in a repository (edits them in place). Does not create new skills (use skill-creator) and never runs benchmarks, evals, or description-optimization loops.
 ---
 
 # Skill Updater
@@ -27,7 +27,7 @@ Get the target skill's name and the change wanted. Sources: the user's request, 
 
 Check all three places before deciding how to deliver:
 
-- **Marketplace skill**: a plugin skill (listed as `plugin:skill`) whose marketplace source repo is cloned locally. Pluneto's own skills live in `~/projects/claude-skills/plugins/<plugin>/skills/<name>/` (marketplace `pluneto-skills`). The installed copy under `~/.claude/plugins/cache/` is a read-only cache; edit the source.
+- **Marketplace skill**: a plugin skill (listed as `plugin:skill`) whose marketplace source repo is cloned locally. Pluneto's own skills live in the local clone of `Pluneto/skills` (usually `~/github/skills`; otherwise find a clone whose `git remote -v` is Pluneto/skills), at `plugins/<plugin>/skills/<name>/` (marketplace `pluneto-skills`). The installed copy under `~/.claude/plugins/cache/` is a read-only cache; edit the source.
 - **Repository skill**: a skill folder in the working project that is writable (typically `.claude/skills/<name>/` or a `skills/` directory). Search with Glob for `**/<name>/SKILL.md`.
 - **Cloud skill**: a skill installed in claude.ai. Its files are read-only here (for example under `/mnt/skills/` or an uploads folder), or it is only known by name from the skills list.
 
@@ -45,6 +45,8 @@ Delivery follows from this:
 Read the whole current SKILL.md and any bundled files the change could touch (scripts, references). You can't keep a skill lean or consistent without knowing what is already there. Note the exact `name` in the frontmatter and the folder name; both must stay unchanged.
 
 ### 4. Make the smallest good edit
+
+First invoke the **writing-for-agents** skill (in Claude Code, call the Skill tool with `writing-for-agents`) if available: its pointer, no-op and pruning rules govern every edit below.
 
 - Edit or delete before adding. If an instruction exists but was missed or misread, reword, move, or tighten it. If two lines conflict, fix one. A pure removal is a good change.
 - A new line is a short imperative with its reason in a clause. Explain why rather than shouting MUST; the model reading the skill is capable and generalises better from reasons.

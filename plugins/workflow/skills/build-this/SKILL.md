@@ -1,6 +1,6 @@
 ---
 name: "build-this"
-description: Carry out an agreed plan from start to finish, milestone by milestone, without re-opening the user's decisions. Use whenever the user says "build this", "/build-this", "build this plan", "build it", attaches or points to a plan-*.md file, or when /plan-this hands off after planning. If there is no plan at all and the goal is big, offer /plan-this in one line first.
+description: Carry out an agreed plan from start to finish, milestone by milestone, without re-opening the user's decisions. Use whenever the user says "build this", "/build-this", "build this plan", "build it", attaches or points to a plan-*.md file or a tickets folder, or when /plan-this hands off after planning. If there is no plan at all and the goal is big, offer /plan-this in one line first.
 ---
 
 # Build this
@@ -15,7 +15,8 @@ Use the first of these that exists:
 
 1. **The plan agreed earlier in this conversation** (the usual case when /plan-this hands off): the deepened goal, decisions, milestones and checks from its confirmed summary.
 2. **A plan file** passed as the skill's argument, attached, or in the project (`plans/plan-*.md`, or `plan-*.md` in the root). Read all of it.
-3. **A plan the user wrote themselves**, in a message or a document.
+3. **Tickets from /to-tickets**: a folder (`plans/<feature>/tickets/`) or an issue list. Each ticket is a milestone and its acceptance criteria are its done-when check. Work them in blocker order (a ticket starts once every ticket in its `Blocked by` is done), and mark each resolved (`Status: resolved`, or close the issue) when its check passes.
+4. **A plan the user wrote themselves**, in a message or a document.
 
 If there's no plan, look at the size of the request. Small and clear: just build it, treating the request as a one-milestone plan. Big or ambiguous: offer /plan-this in one line (*"This has a lot of open choices. Want to plan it first with /plan-this, or should I just build with sensible defaults?"*) and go with their answer.
 
@@ -24,6 +25,8 @@ If there's no plan, look at the size of the request. Small and clear: just build
 ## 1. Read the plan
 
 Read the plan once, carefully, and set up the task list: one item per milestone, in order, plus a final "check everything and report" item. Note each milestone's **done when** check (and its **Skills** line, if it has one); those checks are how you'll know a milestone is really finished, so if a milestone has none, write the obvious one yourself (the test that should pass, the page that should load, the file that should exist) rather than asking.
+
+If the work happens in a git repository, record the base commit now (`git rev-parse HEAD`) for the review in step 5.
 
 Trust the plan: if you'd have chosen differently, build what it says (see "Solving on the go" for the rare exceptions).
 
@@ -120,12 +123,15 @@ Always include **"Write a handoff file"** as one of the check-in options (alongs
 
 ## 5. Finish
 
+**Review the diff once.** If you recorded a base commit and the **review-changes** skill is available, invoke it (in Claude Code, call the Skill tool with `review-changes`), passing the base commit as the fixed point and the plan file or ticket folder as the Spec. Fix the clear Spec misses (a requirement missing or implemented wrong) and re-run the affected checks. Put Standards findings and other judgement calls in the report without acting on them. One pass: don't review again after fixing. If review-changes isn't available, skip this and say so in the report.
+
 **Archive the plan file first, without asking.** If the plan lives as a file in the project and every milestone is done with its check passing, move it to `plans/archive/` (create the folder if missing) so finished plans stay out of the project root and `plans/`. Move, never delete, so it stays recoverable. If anything is blocked or failing, leave the plan where it is, since it's still the working document. Skip this for plans that only existed in the conversation or were attached from outside the project. Mention the new path in the report.
 
 Give one report, short and scannable:
 
 - **What was built**, and where to find it.
 - **Each success check** from the plan, with its result.
+- **Review:** what review-changes found, what you fixed, and the judgement calls left for the user (or "skipped" and why).
 - **Skills used**, per milestone, each with its reason line (Need / Provides / Without it) and what it changed (or "no visible effect"), any skill skipped at build time with why, or "none"; plus the plan's "Skills used while planning" line if it has one, and a note if the helper was not found.
 - **Decisions and deviations** you made on the user's behalf, each with a one-line reason.
 - **Blocked or failing**, if anything, and what would unblock it.
