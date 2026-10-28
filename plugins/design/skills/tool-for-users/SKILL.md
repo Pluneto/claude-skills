@@ -13,7 +13,7 @@ Read `references/file-format.md` before writing anything, and `references/journe
 
 ## Asking the user
 
-Ask each named choice with AskUserQuestion (a numbered list if it's unavailable). These choices are the user's; don't make them yourself, even when one looks obvious.
+Ask each named choice with the question tool (AskUserQuestion in Claude Code; a numbered list if there is none). These choices are the user's; don't make them yourself, even when one looks obvious.
 
 ## Step 0: User-types
 

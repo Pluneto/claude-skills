@@ -28,7 +28,7 @@ Get the target skill's name and the change wanted. Sources: the user's request, 
 Check all three places before deciding how to deliver:
 
 - **Marketplace skill**: a plugin skill (listed as `plugin:skill`) whose marketplace source repo is cloned locally. Pluneto's own skills live in the local clone of `Pluneto/skills` (usually `~/github/skills`; otherwise find a clone whose `git remote -v` is Pluneto/skills), at `plugins/<plugin>/skills/<name>/` (marketplace `pluneto-skills`). The installed copy under `~/.claude/plugins/cache/` is a read-only cache; edit the source.
-- **Repository skill**: a skill folder in the working project that is writable (typically `.claude/skills/<name>/` or a `skills/` directory). Search with Glob for `**/<name>/SKILL.md`.
+- **Repository skill**: a skill folder in the working project that is writable (typically `.claude/skills/<name>/` or a `skills/` directory). Search for `**/<name>/SKILL.md`.
 - **Cloud skill**: a skill installed in claude.ai. Its files are read-only here (for example under `/mnt/skills/` or an uploads folder), or it is only known by name from the skills list.
 
 Delivery follows from this:

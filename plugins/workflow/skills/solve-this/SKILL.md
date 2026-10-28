@@ -1,7 +1,7 @@
 ---
 name: "solve-this"
 description: Solve a task end to end on autopilot with minimal user input, then prove it is solved. Runs /plan-this and /build-this without asking the user anything, keeps diagnosing and retrying until the result passes its checks, and stops with one report containing evidence. Use when the user says "/solve-this", "solve this", "just do it", "handle this end to end", "autopilot", or hands over a goal and wants no interview, approvals or check-ins, even if they don't name the skill. Not for goals where the user wants to steer decisions (use /plan-this).
-compatibility: Requires the plan-this, interview, build-this and research-this skills. The use-available-skills skill and the Agent tool are optional (skill discovery; independent verification).
+compatibility: Requires the plan-this, interview, build-this and research-this skills. The use-available-skills skill and a sub-agent tool (the Agent tool in Claude Code) are optional (skill discovery; independent verification).
 ---
 
 # Solve this
@@ -39,7 +39,7 @@ Stop when every check passes, only user-only or hard-stop items remain (as defin
 
 Don't claim success without evidence.
 - Re-run every success check fresh, after the last change.
-- If the Agent tool is available, have a fresh sub-agent run the checks against the result using only the plan's goal and checks, so it can't grade your work generously. Fix and loop to step 3 on any failure.
+- If you can start sub-agents, have a fresh sub-agent run the checks against the result using only the plan's goal and checks, so it can't grade your work generously. Fix and loop to step 3 on any failure.
 - Capture the proof: for each check, what was run, the actual output (trimmed), and pass or fail. Save it as `proof-<short-topic>.md` next to the plan and send it with the deliverables.
 
 ## 5. Report and stop

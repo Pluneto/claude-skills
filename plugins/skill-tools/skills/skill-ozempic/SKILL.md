@@ -14,7 +14,7 @@ The user decides every cut. Your job is to find them and make the trade-offs vis
 
 ### 1. Read the whole skill
 
-Find the target skill by name (Glob for `**/<name>/SKILL.md`, check `/mnt/skills/`, or the skills list). Read its SKILL.md and every bundled file (scripts, references, assets) it points to. You can't judge what is bloat without seeing all of it. If you can't find it, ask where it is.
+Find the target skill by name (search for `**/<name>/SKILL.md`, check `/mnt/skills/`, or the skills list). Read its SKILL.md and every bundled file (scripts, references, assets) it points to. You can't judge what is bloat without seeing all of it. If you can't find it, ask where it is.
 
 ### 2. State the purpose and get agreement
 

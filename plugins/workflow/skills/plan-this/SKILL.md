@@ -33,7 +33,7 @@ Rewrite the goal as a short paragraph that asks for exactly that, keeping every 
 
 **Commit or mark as open.** Everything the rewritten goal states is settled once the user approves it, so it must not come back as a question in round 1. If something is genuinely undecided (which race, which scope), don't half-pick it ("most likely X"); mark it plainly as open, e.g. *"(race: open, first question)"*, and ask it in round 1.
 
-**Show it before you ask.** Text written between tool calls is summarised in the interface, so a question card can appear over a plan the user never read. Send the four points and the rewritten goal with `SendUserMessage` (or as the reply text if that tool isn't available), then ask *"Shall we plan for this deeper version?"* (Recommended: yes) with the question tool, putting the rewritten goal paragraph inside the question text so the user approves something visible right there. If the only way to show the plan is plain text, end the turn after it and ask in plain text. If they adjust, revise and repeat.
+**Show it before you ask.** Text written between tool calls is summarised in the interface, so a question card can appear over a plan the user never read. Send the four points and the rewritten goal as visible reply text (with `SendUserMessage` in Claude Code, when available), then ask *"Shall we plan for this deeper version?"* (Recommended: yes) with the question tool, putting the rewritten goal paragraph inside the question text so the user approves something visible right there. If the only way to show the plan is plain text, end the turn after it and ask in plain text. If they adjust, revise and repeat.
 
 ## 2. Interview in rounds
 
@@ -69,7 +69,7 @@ Ask with the question tool what to do next, recommending by situation: **Build i
 
 Milestones are the unit of work by default. Only when the work spans several sessions or parallel agents, add one line after the question: the user can type `/to-tickets` on the saved plan to split it into tickets with blockers, and build-this then works those tickets in order.
 
-If they choose to build (with or without saving first), invoke the **build-this** skill with the Skill tool and let it take over; pass the saved plan's path as the argument if you saved one, otherwise it picks the plan up from the conversation. Don't build inside this skill, and don't ask build-this's questions (how to build, which model) yourself. If build-this isn't available, say so in one line, save the plan file, and tell the user to attach it in a session that has build-this.
+If they choose to build (with or without saving first), invoke the **build-this** skill (the Skill tool in Claude Code) and let it take over; pass the saved plan's path as the argument if you saved one, otherwise it picks the plan up from the conversation. Don't build inside this skill, and don't ask build-this's questions (how to build, which model) yourself. If build-this isn't available, say so in one line, save the plan file, and tell the user to attach it in a session that has build-this.
 
 ### Saving
 
