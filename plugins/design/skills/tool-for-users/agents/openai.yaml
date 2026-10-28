@@ -1,0 +1,3 @@
+interface:
+  display_name: "Tool For Users"
+  short_description: "Map a tool's features to user-types"

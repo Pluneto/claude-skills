@@ -1,6 +1,7 @@
 ---
 name: "reflect"
-description: End-of-session retrospective. Finds friction and repeated work in the session, then applies up to five lean edits, of any size, to project notes or skills so future sessions need less help from the user. Run only when the user invokes /reflect (optionally with a focus) or asks for a retro or lessons from the session; never on your own initiative, even when a task finishes.
+description: End-of-session retro. Finds friction and repeated work in the session and applies up to five lean edits to project notes or skills. Optionally takes a focus.
+disable-model-invocation: true
 ---
 
 # Reflect

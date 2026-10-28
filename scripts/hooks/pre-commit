@@ -12,5 +12,5 @@ if [[ "$email" != *@users.noreply.github.com ]]; then
 fi
 
 scripts/build-marketplace
-git add .claude-plugin/marketplace.json
+git add .claude-plugin/marketplace.json plugins/*/.claude-plugin/plugin.json
 scripts/validate

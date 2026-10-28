@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+"""Bump a plugin's version: scripts/bump <plugin> [major|minor|patch] (default patch)."""
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+
+
+def main(plugin, part="patch"):
+    path = ROOT / "plugins" / plugin / ".claude-plugin" / "plugin.json"
+    manifest = json.loads(path.read_text(encoding="utf-8"))
+    major, minor, patch = map(int, manifest.get("version", "0.0.0").split("."))
+    major, minor, patch = {"major": (major + 1, 0, 0), "minor": (major, minor + 1, 0),
+                           "patch": (major, minor, patch + 1)}[part]
+    manifest["version"] = f"{major}.{minor}.{patch}"
+    path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    print(f"{plugin}: {manifest['version']}")
+
+
+if __name__ == "__main__":
+    if not 2 <= len(sys.argv) <= 3:
+        sys.exit(__doc__)
+    main(*sys.argv[1:])

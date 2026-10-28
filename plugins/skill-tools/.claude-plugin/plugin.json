@@ -1,10 +1,17 @@
 {
   "name": "skill-tools",
-  "description": "Maintain skills: end-of-session reflect retro, skill-updater and skill-ozempic.",
+  "version": "1.0.0",
+  "description": "Write and maintain skills: writing-for-agents, skill-updater, skill-ozempic and the end-of-session reflect retro.",
   "author": {
     "name": "Pluneto"
   },
   "license": "MIT",
   "homepage": "https://github.com/Pluneto/skills",
-  "repository": "https://github.com/Pluneto/skills"
+  "repository": "https://github.com/Pluneto/skills",
+  "skills": [
+    "./skills/reflect",
+    "./skills/skill-ozempic",
+    "./skills/skill-updater",
+    "./skills/writing-for-agents"
+  ]
 }

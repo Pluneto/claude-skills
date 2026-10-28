@@ -1,10 +1,14 @@
 {
   "name": "setup",
+  "version": "1.0.0",
   "description": "Set up or repair the pluneto-skills plugins in a repo (/setup:setup-pluneto-skills). Install once at user scope.",
   "author": {
     "name": "Pluneto"
   },
   "license": "MIT",
   "homepage": "https://github.com/Pluneto/skills",
-  "repository": "https://github.com/Pluneto/skills"
+  "repository": "https://github.com/Pluneto/skills",
+  "skills": [
+    "./skills/setup-pluneto-skills"
+  ]
 }

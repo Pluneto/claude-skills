@@ -1,0 +1,5 @@
+interface:
+  display_name: "Skill Ozempic"
+  short_description: "Slim down a bloated skill"
+policy:
+  allow_implicit_invocation: false

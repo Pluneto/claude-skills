@@ -1,6 +1,7 @@
 ---
 name: skill-ozempic
-description: Slim down a bloated skill by cutting fluff while keeping its purpose intact. Use whenever the user says "put {skill name} through ozempic", or asks to trim, slim, shrink, de-bloat, declutter, tighten or cut fluff from an existing skill, even if they don't say "ozempic". Reads the skill, confirms its purpose with the user, proposes numbered cuts with pros and cons, then hands the approved cuts to skill-updater. Not for creating skills or adding new content.
+description: Slim down a bloated skill. Confirms its purpose, proposes numbered cuts with pros and cons, and hands the approved cuts to skill-updater.
+disable-model-invocation: true
 ---
 
 # Skill Ozempic

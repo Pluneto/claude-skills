@@ -1,0 +1,21 @@
+{
+  "name": "engineering",
+  "version": "1.0.0",
+  "description": "Engineering practice: tdd, diagnosing-bugs, review-changes, pr, prototype, and codebase design and domain modelling (codebase-design, improve-codebase-architecture, domain-modeling). Adapted from mattpocock/skills (MIT).",
+  "author": {
+    "name": "Pluneto"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/Pluneto/skills",
+  "repository": "https://github.com/Pluneto/skills",
+  "skills": [
+    "./skills/codebase-design",
+    "./skills/diagnosing-bugs",
+    "./skills/domain-modeling",
+    "./skills/improve-codebase-architecture",
+    "./skills/pr",
+    "./skills/prototype",
+    "./skills/review-changes",
+    "./skills/tdd"
+  ]
+}

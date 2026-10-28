@@ -1,0 +1,3 @@
+interface:
+  display_name: "Use Available Skills"
+  short_description: "Pick skills worth using for this task"

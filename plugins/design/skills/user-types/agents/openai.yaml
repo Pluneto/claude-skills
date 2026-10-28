@@ -1,0 +1,3 @@
+interface:
+  display_name: "User Types"
+  short_description: "Maintain the repo's user-types list"

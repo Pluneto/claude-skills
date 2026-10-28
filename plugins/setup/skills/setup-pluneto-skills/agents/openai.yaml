@@ -1,0 +1,5 @@
+interface:
+  display_name: "Setup Pluneto Skills"
+  short_description: "Set up or repair pluneto-skills in a repo"
+policy:
+  allow_implicit_invocation: false

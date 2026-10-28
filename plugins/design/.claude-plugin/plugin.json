@@ -1,10 +1,17 @@
 {
   "name": "design",
-  "description": "Design reviews: backend-design-review and dashboard-design.",
+  "version": "1.0.0",
+  "description": "Design and UX reviews: backend-design-review, dashboard-design, user-types and tool-for-users.",
   "author": {
     "name": "Pluneto"
   },
   "license": "MIT",
   "homepage": "https://github.com/Pluneto/skills",
-  "repository": "https://github.com/Pluneto/skills"
+  "repository": "https://github.com/Pluneto/skills",
+  "skills": [
+    "./skills/backend-design-review",
+    "./skills/dashboard-design",
+    "./skills/tool-for-users",
+    "./skills/user-types"
+  ]
 }

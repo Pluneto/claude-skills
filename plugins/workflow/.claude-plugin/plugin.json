@@ -1,10 +1,23 @@
 {
   "name": "workflow",
-  "description": "Plan, build, solve and research goals end to end (plan-this, build-this, solve-this, research-this, use-available-skills) plus handoff.",
+  "version": "1.0.0",
+  "description": "Plan, build, solve and research goals end to end: plan-this, interview, build-this, solve-this, research-this, use-available-skills, wayfinder, to-tickets, plus handoff, to-questionnaire, wizard and the which-skill router.",
   "author": {
     "name": "Pluneto"
   },
   "license": "MIT",
   "homepage": "https://github.com/Pluneto/skills",
-  "repository": "https://github.com/Pluneto/skills"
+  "repository": "https://github.com/Pluneto/skills",
+  "skills": [
+    "./skills/build-this",
+    "./skills/handoff",
+    "./skills/plan-this",
+    "./skills/research-this",
+    "./skills/solve-this",
+    "./skills/to-questionnaire",
+    "./skills/to-tickets",
+    "./skills/use-available-skills",
+    "./skills/wayfinder",
+    "./skills/wizard"
+  ]
 }

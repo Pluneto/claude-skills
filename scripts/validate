@@ -1,15 +1,29 @@
 #!/usr/bin/env python3
-"""Run `claude plugin validate --strict` on the marketplace and every plugin.
+"""Run `claude plugin validate --strict` on the marketplace and every plugin,
+then the repo's own checks:
 
-Same as --strict, except the "No version specified" warning is allowed:
-plugins omit `version` on purpose so updates follow git commits.
+- every plugin.json has a version, and a plugin whose files differ from
+  origin/main has a different version than origin/main (bump with scripts/bump)
+- every skill has agents/openai.yaml, with allow_implicit_invocation: false
+  exactly when SKILL.md has disable-model-invocation: true
+- every skill copied from mattpocock/skills keeps its LICENSE
+- every skill is named in the which-skill router
 """
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
 
+import yaml
+
 ROOT = Path(__file__).resolve().parent.parent
+FRONTMATTER = re.compile(r"\A---\n(.*?)\n---\n", re.S)
+# Skills copied from mattpocock/skills (MIT): each folder must keep his LICENSE.
+VENDORED = {"tdd", "diagnosing-bugs", "review-changes", "pr", "prototype", "codebase-design",
+            "improve-codebase-architecture", "domain-modeling", "wayfinder", "to-tickets",
+            "to-questionnaire", "wizard", "writing-for-agents", "handoff"}
+ROUTER = ROOT / "plugins" / "workflow" / "skills" / "which-skill" / "SKILL.md"
 
 
 def problems(report):
@@ -18,22 +32,68 @@ def problems(report):
         for err in section.get("errors", []):
             yield f"error   {err.get('path', '')}: {err['message']}"
         for warn in section.get("warnings", []):
-            if warn.get("path", "").endswith("version") and warn["message"].startswith("No version specified"):
-                continue
             yield f"warning {warn.get('path', '')}: {warn['message']}"
 
 
+def git(*args):
+    return subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True, text=True)
+
+
+def version_problems(plugin):
+    rel = f"plugins/{plugin.name}"
+    version = json.loads((plugin / ".claude-plugin" / "plugin.json").read_text()).get("version")
+    if not version:
+        return [f"{rel}: plugin.json needs a version"]
+    base = git("show", f"origin/main:{rel}/.claude-plugin/plugin.json")
+    if base.returncode != 0:  # new plugin, or origin/main not fetched
+        return []
+    changed = git("diff", "--quiet", "origin/main", "--", rel).returncode != 0
+    if changed and json.loads(base.stdout).get("version") == version:
+        return [f"{rel}: files changed since origin/main but version is still {version}; run scripts/bump {plugin.name}"]
+    return []
+
+
+def skill_problems(skill):
+    rel = skill.relative_to(ROOT)
+    match = FRONTMATTER.match((skill / "SKILL.md").read_text(encoding="utf-8"))
+    user_only = (yaml.safe_load(match.group(1)) or {}).get("disable-model-invocation") is True
+    found = []
+    meta_path = skill / "agents" / "openai.yaml"
+    if not meta_path.is_file():
+        found.append(f"{rel}: missing agents/openai.yaml")
+    else:
+        meta = yaml.safe_load(meta_path.read_text(encoding="utf-8")) or {}
+        interface = meta.get("interface") or {}
+        if not interface.get("display_name") or not interface.get("short_description"):
+            found.append(f"{rel}: openai.yaml needs interface.display_name and short_description")
+        implicit = (meta.get("policy") or {}).get("allow_implicit_invocation", True)
+        if implicit == user_only:
+            found.append(f"{rel}: openai.yaml allow_implicit_invocation must be {not user_only} "
+                         f"(disable-model-invocation is {user_only})")
+    if skill.name in VENDORED and not (skill / "LICENSE").is_file():
+        found.append(f"{rel}: copied from mattpocock/skills, keep its LICENSE")
+    if ROUTER.is_file() and skill.name != "which-skill" and skill.name not in ROUTER.read_text(encoding="utf-8"):
+        found.append(f"{rel}: not named in which-skill")
+    return found
+
+
 def main():
-    targets = [ROOT] + sorted(p for p in (ROOT / "plugins").glob("*") if p.is_dir())
+    plugins = sorted(p for p in (ROOT / "plugins").glob("*") if p.is_dir())
     failed = False
-    for target in targets:
+    for target in [ROOT] + plugins:
         out = subprocess.run(["claude", "plugin", "validate", "--json", str(target)],
                              capture_output=True, text=True).stdout
         found = list(problems(json.loads(out)))
+        if target != ROOT:
+            found += version_problems(target)
+            for skill in sorted(p for p in (target / "skills").glob("*") if p.is_dir()):
+                found += skill_problems(skill)
         if found:
             failed = True
             print(f"{target.relative_to(ROOT) or '.'}:\n  " + "\n  ".join(found), file=sys.stderr)
-    print("validate: " + ("FAILED" if failed else f"ok ({len(targets)} targets)"))
+    if not ROUTER.is_file():
+        print("validate: note: which-skill doesn't exist yet, router check skipped", file=sys.stderr)
+    print("validate: " + ("FAILED" if failed else f"ok ({len(plugins) + 1} targets)"))
     return 1 if failed else 0
 
 

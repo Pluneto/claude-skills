@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Regenerate .claude-plugin/marketplace.json from plugins/*/.
+"""Regenerate .claude-plugin/marketplace.json from plugins/*/, and each
+plugin.json's `skills` list from its skills/ folders (Codex needs the list).
 
 Fails (exit 1) if a plugin or skill is malformed or contains a symlink.
 """
@@ -14,7 +15,7 @@ ROOT = Path(__file__).resolve().parent.parent
 MARKETPLACE = {
     "name": "pluneto-skills",
     "owner": {"name": "Pluneto", "url": "https://github.com/Pluneto"},
-    "description": "Pluneto's Claude Code skills: plan and build workflows, skill maintenance, design and UX reviews.",
+    "description": "Pluneto's agent skills: plan and build workflows, engineering practice, skill authoring, design and UX reviews.",
 }
 FRONTMATTER = re.compile(r"\A---\n(.*?)\n---\n", re.S)
 
@@ -52,9 +53,14 @@ def check_plugin(plugin_dir):
 
 
 def plugin_entry(plugin_dir):
-    manifest = json.loads((plugin_dir / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
+    manifest_path = plugin_dir / ".claude-plugin" / "plugin.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     if manifest.get("name") != plugin_dir.name:
         raise ValueError(f"{plugin_dir.name}: plugin.json name must match the folder name")
+    skills = [f"./skills/{p.name}" for p in sorted((plugin_dir / "skills").glob("*")) if p.is_dir()]
+    if manifest.get("skills") != skills:
+        manifest["skills"] = skills
+        manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     return {
         "name": plugin_dir.name,
         "source": f"./plugins/{plugin_dir.name}",

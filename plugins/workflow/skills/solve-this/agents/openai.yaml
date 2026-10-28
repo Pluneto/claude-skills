@@ -1,0 +1,3 @@
+interface:
+  display_name: "Solve This"
+  short_description: "Plan, build and verify on autopilot"
