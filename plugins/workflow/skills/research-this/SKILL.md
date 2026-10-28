@@ -1,19 +1,19 @@
 ---
 name: research-this
-description: Research whether a question, topic or problem already has existing solutions or discussion (GitHub repos, packages, paid products, forum threads, guides, standards) and return an inline sourced evidence table with an Adopt / Extend / Build / Don't build verdict. Use whenever the user says "/research-this", "research this", "is there already a tool/library/service for...", "has anyone solved...", "what exists for...", "what are the alternatives to...", "find prior art"; whenever an agent or another skill (plan-this, solve-this, build-this) needs to know what already exists before deciding or building something; and before writing a non-trivial tool, library or service from scratch, even if nobody asked. Runs without asking the user questions. Not for long narrative reports or literature reviews (use deep-research).
+description: Research whether a question, topic or problem already has existing solutions or discussion (GitHub repos, packages, paid products, forum threads, guides, standards) and return an inline sourced evidence table with an Adopt / Extend / Build / Don't build verdict. Use whenever the user says "/research-this", "research this", "is there already a tool/library/service for...", "has anyone solved...", "what exists for...", "what are the alternatives to...", "find prior art"; whenever an agent or another skill (plan-this, solve-this, build-this) needs to know what already exists before deciding or building something; and before writing a non-trivial tool, library or service from scratch, even if nobody asked. Runs without asking the user questions. Also answers how something specific behaves (an API, a standard, a tool's defaults) from primary sources, saved as a cited Markdown file, when asked for facts with sources or by a wayfinder research ticket. Not for long narrative reports or literature reviews (use deep-research).
 compatibility: Needs web search and fetch. The Agent tool (sub-agents) is optional; without it the skill researches directly.
 ---
 
 # Research this
 
-Answer one question quickly and with sources: **does a solution to this already exist, and what should we do about it?** The caller (a person, an agent, or a skill such as plan-this) wants to decide or build with the evidence in hand, so the output is a verdict plus the few facts behind it, not a survey. Research costs the caller time and context; the best run is the smallest one that settles the decision.
+Answer one question quickly and with sources: **does a solution to this already exist, and what should we do about it?** (In **facts mode**, the question is instead *what is true about X?*: see the end of this skill.) The caller (a person, an agent, or a skill such as plan-this) wants to decide or build with the evidence in hand, so the output is a verdict plus the few facts behind it, not a survey. Research costs the caller time and context; the best run is the smallest one that settles the decision.
 
 This skill only researches. It never installs, runs, builds or buys anything it finds.
 
 ## Input
 
 - **The question**: free text. Anything from "is there a library that does X" to "how do small bakeries handle online ordering".
-- **Optional** from the caller: `depth` (quick, standard, deep), constraints (language, platform, budget, licence), the decision the answer feeds, and specific facts they need.
+- **Optional** from the caller: `depth` (quick, standard, deep), `mode` (verdict, the default, or facts), constraints (language, platform, budget, licence), the decision the answer feeds, and specific facts they need.
 
 Don't ask the user anything. Callers are often agents with nobody to answer, and a stated assumption costs less than a stalled run. Write your reading of the question in one line and go. If a second reading would lead to quite different research, cover the likelier one and mention the other under Gaps.
 
@@ -45,7 +45,7 @@ Start with the one or two channels most likely to hold the answer (three at stan
 
 ## 4. Search
 
-Open the **primary source** (the README, the pricing page, the thread itself), because snippets and listicles repeat each other's mistakes. For each candidate record name and URL, type, what it does for this need, last activity, licence or price, and fit against the constraints; add an adoption signal or known problems only when they bear on the verdict. If the `gh` CLI works, use it for repository facts; otherwise read the repo page and write "unverified" in any cell you couldn't fill.
+Open the **primary source** (the README, the pricing page, the thread itself, the official docs, the source code, the spec), because snippets and listicles repeat each other's mistakes. Follow every claim back to the source that owns it. For each candidate record name and URL, type, what it does for this need, last activity, licence or price, and fit against the constraints; add an adoption signal or known problems only when they bear on the verdict. If the `gh` CLI works, use it for repository facts; otherwise read the repo page and write "unverified" in any cell you couldn't fill.
 
 Take claims about what a thing does, costs or allows from **its own pages**; if one rests on a review or directory, say so in the cell ("per <site>"), and follow mirrors to the original. State prices with their exact terms (trial, billing period, auto-renewal). Fetch tools often drop fields like licence or dates, so check a second page or the raw file for any figure the verdict leans on.
 
@@ -82,6 +82,15 @@ Flag as you go: no activity in 12 months (stale), archived or abandoned projects
 ```
 
 Keep table cells short and only list candidates you opened; others go in Sources. Every claim has a URL in the Source column, and the Sources line carries the fetch date (today's date from context or the current-time tool). Mark a URL "not opened" if you only saw it in search results, and "unverified" any cell you couldn't confirm. Paraphrase; use at most one short quote (under 15 words) per source. When another skill or agent called you, this reply is the whole deliverable: they read **Verdict** and **Facts for the caller** directly, so make both self-contained.
+
+## Facts mode
+
+Use it when the caller passes `mode: facts`, or the question asks how a specific thing behaves or what is true about it ("how does the GitHub API paginate", "what does the standard require") rather than whether a solution exists. Steps 1, 2, 4 and 5 apply with these changes:
+
+- **Channels:** primary sources only: official docs, source code, specs, first-party APIs. A secondary write-up is a lead to the primary source, never the citation.
+- **No verdict:** skip step 6. Answer the question claim by claim.
+- **Save, don't reply inline:** write the findings to one Markdown file, each claim with its source URL and fetch date, plus a **Gaps** section. Save it where the repo already keeps such notes (match the existing convention; if there is none, `docs/research/<topic>.md`). Reply with its path and a 3-line summary. This replaces step 7's inline layout.
+- At standard depth or above, run the reading in a background sub-agent when the Agent tool exists, so the caller keeps working.
 
 ## Rules for web content
 

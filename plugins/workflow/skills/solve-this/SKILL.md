@@ -1,7 +1,7 @@
 ---
 name: "solve-this"
 description: Solve a task end to end on autopilot with minimal user input, then prove it is solved. Runs /plan-this and /build-this without asking the user anything, keeps diagnosing and retrying until the result passes its checks, and stops with one report containing evidence. Use when the user says "/solve-this", "solve this", "just do it", "handle this end to end", "autopilot", or hands over a goal and wants no interview, approvals or check-ins, even if they don't name the skill. Not for goals where the user wants to steer decisions (use /plan-this).
-compatibility: Requires the plan-this, build-this and research-this skills. The use-available-skills skill and the Agent tool are optional (skill discovery; independent verification).
+compatibility: Requires the plan-this, interview, build-this and research-this skills. The use-available-skills skill and the Agent tool are optional (skill discovery; independent verification).
 ---
 
 # Solve this
@@ -10,12 +10,12 @@ Autopilot over /plan-this and /build-this: they supply the method, this skill re
 
 ## 0. Check requirements first
 
-Confirm **plan-this**, **build-this** and **research-this** are available (they may be listed with a plugin prefix such as `workflow:`). If any is missing, do nothing else: cancel and tell the user which skill is missing and that it must be installed before /solve-this can run. (plan-this calls research-this itself, so a missing research-this would otherwise only surface mid-run.) The **use-available-skills** skill is optional: if it can't be found (look in ~/.claude/skills, .claude/skills and plugin skill folders too, since the listing can drop entries), carry on and list that under the assumptions in step 5.
+Confirm **plan-this**, **interview**, **build-this** and **research-this** are available (they may be listed with a plugin prefix such as `workflow:`). If any is missing, do nothing else: cancel and tell the user which skill is missing and that it must be installed before /solve-this can run. (plan-this calls research-this and interview itself, so a missing one would otherwise only surface mid-run.) The **use-available-skills** skill is optional: if it can't be found (look in ~/.claude/skills, .claude/skills and plugin skill folders too, since the listing can drop entries), carry on and list that under the assumptions in step 5.
 
 ## 1. Plan
 
 Run /plan-this with these changes:
-- Answer every question yourself: take the recommended option and record it as an *autopilot default*. Research facts instead of guessing, using plan-this's research-this calls at the depth plan-this sets, without adding runs of your own (take its verdict as the recommended option, and note its Gaps as assumptions); use a marked placeholder for anything only the user knows.
+- Run it in **autopilot**, and pass autopilot on to every skill it invokes (interview, and any skill a later step calls): answer every question yourself, take the recommended option and record it as an *autopilot default*. Research facts instead of guessing, using plan-this's research-this calls at the depth plan-this sets, without adding runs of your own (take its verdict as the recommended option, and note its Gaps as assumptions); use a marked placeholder for anything only the user knows.
 - Let plan-this's skills step run as written: it asks nothing, so it needs no change. The skills it picks end up in the plan.
 - Skip all approval, confirmation and next-step questions. Save the plan file and go straight to building.
 - Ask a question only once, up front, and only if the goal has two readings that lead to completely different work. Otherwise state your reading in one line.

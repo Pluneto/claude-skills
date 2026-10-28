@@ -10,7 +10,7 @@ Turn this session's avoidable problems into up to five edits, of any size, and a
 
 The more an agent can run on its own, without the user stepping in, the better. That is the lens for the whole retrospective: the best lesson is one that removes a future round-trip to the user, and reflect itself should not add one.
 
-Every line of instructions is read by every future session. The goal is therefore not to record what happened but to make the instructions better, and shorter where possible. Making no changes is a valid outcome. If the user names a focus (`/reflect the build setup`), review only that.
+Every line of instructions is read by every future session. The goal is therefore not to record what happened but to make the instructions better, and shorter where possible. Making no changes is a valid outcome. If the user names a focus (`/reflect the build setup`), review only that. If they name another session, read its transcript from the session logs on this machine instead of this one.
 
 ## 1. Find the problems
 
@@ -26,6 +26,15 @@ For each one, ask which instruction, present at the start of the session, would 
 
 Also look for procedures, helper scripts or dictated checklists repeated in the session.
 
+Then check the agent's environment through these lenses, each only when its signal showed up:
+
+- **Navigation:** finding the right file or fact took long → a navigation pointer in CLAUDE.md/AGENTS.md (those files hold pointers, not content).
+- **Guardrail:** the agent made a mistake an automated check could have caught, or the repo has no pre-commit hook or CI job running its lint, type or test command. Read the repo's existing check commands first: a check that exists but is unwired or broken is the finding.
+- **Mechanical rule → check:** a violated rule with a fixed pattern (a banned API, an import shape, a file location) gets a deterministic check (a linter rule, hook or CI job), not a note. Judgement calls go in `CODING_STANDARDS.md`, which the reviewer reads: review works from a diff with the least context pressure, so standards belong there, not in notes the implementer always loads.
+- **Tool economy:** an expensive or token-heavy tool call a cheaper command or script would replace.
+- **No-ops and misplaced steering:** steering lines that don't change behaviour versus the default (remove them), or CLAUDE.md/AGENTS.md rules that belong in a check or `CODING_STANDARDS.md` (move them).
+- **Information access:** a fact the agent needed but couldn't see (dev-server logs, read-only access to a service).
+
 ## 2. Find where instructions live
 
 Look before deciding, because that depends on the project. Typical places: CLAUDE.md, AGENTS.md, rules directories, README, CONTRIBUTING, docs, a notes file, project instructions, memory, and the skills directory, including nested files close to the work involved. Read in full whatever could overlap with your lessons, since you cannot keep things lean without knowing what is already there. For automation candidates, also list the skills that already exist, because the right fix is often to extend one of them.
@@ -40,6 +49,7 @@ For each lesson pick one target:
 - **pluneto plugin skill**: an existing skill from the `pluneto-skills` marketplace (listed as `<plugin>:<skill>`). These serve many projects, so the lesson must still hold with this session's specifics removed ("when X kind of situation comes up, do Y because Z"); if it only holds here, it is a project note. The user applies it from a prompt you write (step 4)
 - **new skill**: a repeated procedure that no existing skill or note covers (criteria below)
 - **project note**: a fact, convention, command, or gotcha; the file from step 2
+- **check**: a lint rule, hook, CI job or script, added to the repo's existing guardrail
 - **no change**: a one-off, or already covered
 
 Edit or delete before you add. If an instruction exists but was missed, reword, move, or tighten it. If two lines conflict, fix one of them. Stale or redundant lines found along the way are fair edits, and a pure removal is a good change. A new line is one short imperative with its reason in a clause, specific enough to act on (the exact command or path), with no story of what happened.

@@ -1,7 +1,7 @@
 ---
 name: "plan-this"
 description: Turn any goal into a deep, agreed implementation plan. First deepens the goal the way a top professional in that field would, then interviews the user in rounds over a tree of design decisions until nothing is left assumed, then confirms the plan and hands off to /build-this or saves a Markdown plan. Planning only, it never builds. Use whenever the user says "plan this", "/plan-this", "help me plan", "make a plan for", or asks for an implementation plan for any kind of goal. If the user describes a large, multi-step or high-stakes goal without asking for a plan, do not start the interview; offer this skill in one line instead.
-compatibility: Requires the research-this skill. The use-available-skills skill is optional.
+compatibility: Requires the research-this and interview skills. The use-available-skills skill is optional.
 ---
 
 # Plan this
@@ -12,7 +12,7 @@ This skill only plans: don't act on the goal (write code, create files, book thi
 
 ## 0. Check requirements first
 
-Confirm the **research-this** skill is available (it may be listed with a plugin prefix such as `workflow:`). If it is missing, do nothing else: cancel and tell the user that research-this is missing and must be installed before /plan-this can run. Planning without its research would skip the step that keeps plans from reinventing what already exists.
+Confirm the **research-this** and **interview** skills are available (they may be listed with a plugin prefix such as `workflow:`). If either is missing, do nothing else: cancel and tell the user which is missing and that it must be installed before /plan-this can run. Planning without research reinvents what already exists, and without the interview nothing gets decided.
 
 ## 1. Deepen the goal
 
@@ -37,48 +37,27 @@ Rewrite the goal as a short paragraph that asks for exactly that, keeping every 
 
 ## 2. Interview in rounds
 
-Map the plan as a **design tree**. The root is the deepened goal. Every decision branches into the decisions that hang off it: choosing *"online ordering"* opens *"which payment provider"*; choosing *"no ordering"* closes that whole branch.
-
-The **frontier** is every decision whose prerequisites are already settled: the questions you can ask now without guessing at answers you haven't heard yet.
-
 ### Skills that fit
 
 Before the first round, run the **use-available-skills** skill on the approved goal for the planning phase. It loads only the skills that pass its written reason test (the need in this goal, what the skill provides, what goes wrong without it), and "none" is a normal result. Use whatever it loads while you map the tree and write the options, so recommendations are sharper (a design-review skill for a backend plan, say). A skill's advice shapes your recommendations only; the user still decides. The skill is optional: if it can't be found (look in ~/.claude/skills, .claude/skills and plugin skill folders too, since the listing can drop entries), skip this and write "not checked" as the Skills line of every milestone. Once the milestones are known (just before step 3, and again if they change at the confirmation), run it for the build phase in record-only mode, passing the milestone list, so it returns, per milestone, the skills that pass its reason test (usually fewer than 3) with their reason lines, without loading them, because /build-this loads them when each milestone starts. Copy the reason lines into the plan as they are, including any "(description only)" mark. Never ask the user which skills to use, and don't spend an interview question on them. Sub-agents often can't see skills, so paste any guidance a sub-agent needs into its brief.
 
-### Each round
+### Run the interview
 
-1. **Separate facts from decisions.** Facts (what's in the project, what a tool supports, what something costs, what the rules say, what date an event is) are your job, never the user's. Look them up. Where you can dispatch a sub-agent, do so, so the lookup runs while you ask the rest. A running lookup is an unsettled prerequisite: only the questions that depend on it wait; ask everything else now. Without sub-agents, look things up yourself before the round.
-   - **Verify before you ask.** Never put a choice to the user that rests on a fact you haven't confirmed ("I'll double-check these dates later"). Check it first, or hold that question until the check is done.
-   - **Where to look.** Read freely from whatever is already available: the working folder, connected tools and apps, the web, the user's attached files. Ask before attaching or connecting anything new (adding a repository, enabling a connector, signing in somewhere), since that reaches into places the user didn't point you to. Never change anything while looking.
-   - **Choosing among existing options.** When a decision means picking an existing tool, product, provider or approach (which payment provider, which library), offer the options and recommendation from the first research run when it already covers them; only if it doesn't, run research-this at quick depth on that one choice before asking. Plain facts (a price, a date, what a tool supports) stay ordinary lookups.
-   - Some facts only the user knows (their current fitness, whether they've already asked their employer). Ask those plainly, without a recommendation or pros and cons, since there's nothing to weigh.
-2. **Ask the whole frontier in one round** with the question tool (AskUserQuestion). It holds at most 4 questions per call, so use as many consecutive calls as the round needs, most foundational questions first. If a question depends on another question still open in this round, it belongs to a later round.
-3. **Format every question the same way:**
-   - Word it so **"yes" accepts your recommendation** ("Should the site use Stripe for payments?").
-   - Put the recommended option **first**, labelled "(Recommended)".
-   - Give 2–4 options, each, plain ones like "No, adjust it" included, with a **one-line pro and con** in plain language: `Pro: … Con: …`. Avoid jargon; if a term is unavoidable, explain it in a few words.
-   - Every con must be real: "Con: none" means it isn't a decision (bundle it as a default or look it up), and even the recommended option costs something.
-   - The user can always type their own answer, so no "Other" option is needed.
-4. **Read the answers carefully.** A typed answer can open new branches, close others, or even change the goal. Recompute the frontier from what they actually said.
-5. **Show one short progress line** before the next round, e.g. *"Round 2 done: 7 decided, 3 open, about 1 round left."*
+Invoke the **interview** skill (in Claude Code, call the Skill tool with `interview`). It maps the plan as a design tree and asks the user in rounds until the frontier is empty. Pass it:
 
-### Keeping rounds light
+- **Root:** the approved deepened goal. Everything the goal states is settled.
+- **Settled decisions:** any the user already made, including those from a wayfinder map (see Input from a map).
+- **Autopilot**, when solve-this is running this skill.
+- **These plan-specific rules:**
+  - **Choosing among existing options.** When a decision means picking an existing tool, product, provider or approach (which payment provider, which library), offer the options and recommendation from the first research run when it already covers them; only if it doesn't, run research-this at quick depth on that one choice before asking. Plain facts (a price, a date, what a tool supports) stay ordinary lookups.
+  - **Plan code simply.** If the plan involves code, plan it to follow **KISS**, and **SOLID** for object-oriented code; KISS wins when they conflict. These are standing constraints, so spend no question on them; record them once under **Constraints** in the plan.
+  - **Needs from you.** Keep a running list of what only the user can supply (accounts, keys, real content, sign-offs, physical-world actions) for the plan's **Needs from you** section, tagged *needed early* or *can wait*.
 
-Nothing is silently assumed, but not every choice needs its own question: bundle decisions that have a conventional default and no real trade-off into one *"Use these defaults: A, B, C?"* question (Recommended: yes). A "no" turns them back into separate questions next round.
+Use the decisions it hands back for step 3.
 
-### Plan code simply
+### Input from a map
 
-If the plan involves code, plan it to follow **KISS**, and **SOLID** for object-oriented code; KISS wins when they conflict. These are standing constraints, so don't spend an interview question on them; record them once under **Constraints** in the plan.
-
-### Needs from you
-
-Keep a running list of what only the user can supply (accounts, keys, real content, sign-offs, physical-world actions) for the plan's **Needs from you** section, tagged *needed early* or *can wait*.
-
-### When the tree is done
-
-The interview ends when the frontier is empty: every branch visited, every decision either answered by the user or listed as an accepted default.
-
-If the question tool isn't available, ask the same way in plain text: numbered, with your recommendation and a one-line pro and con per option, the whole frontier at once, then wait.
+When the goal comes from a wayfinder map (`plans/<effort>/map.md` or its issue), the map's settled decisions are fixed: deepen and interview only the gaps the map leaves open, and cite the map in the plan's Goal section.
 
 ## 3. Confirm shared understanding
 
@@ -87,6 +66,8 @@ Summarise in plain language: the deepened goal, every decision with its choice, 
 ## 4. Next step
 
 Ask with the question tool what to do next, recommending by situation: **Build it now** (recommended when you're working inside a project or workspace where the work can actually be done), **Save a Markdown plan** (recommended when the work happens elsewhere or later), or **Save the plan, then build**.
+
+Milestones are the unit of work by default. Only when the work spans several sessions or parallel agents, add one line after the question: the user can type `/to-tickets` on the saved plan to split it into tickets with blockers, and build-this then works those tickets in order.
 
 If they choose to build (with or without saving first), invoke the **build-this** skill with the Skill tool and let it take over; pass the saved plan's path as the argument if you saved one, otherwise it picks the plan up from the conversation. Don't build inside this skill, and don't ask build-this's questions (how to build, which model) yourself. If build-this isn't available, say so in one line, save the plan file, and tell the user to attach it in a session that has build-this.
 

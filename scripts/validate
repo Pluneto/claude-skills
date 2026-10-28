@@ -22,7 +22,7 @@ FRONTMATTER = re.compile(r"\A---\n(.*?)\n---\n", re.S)
 # Skills copied from mattpocock/skills (MIT): each folder must keep his LICENSE.
 VENDORED = {"tdd", "diagnosing-bugs", "review-changes", "pr", "prototype", "codebase-design",
             "improve-codebase-architecture", "domain-modeling", "wayfinder", "to-tickets",
-            "to-questionnaire", "wizard", "writing-for-agents", "handoff"}
+            "to-questionnaire", "wizard", "writing-for-agents", "handoff", "which-skill"}
 ROUTER = ROOT / "plugins" / "workflow" / "skills" / "which-skill" / "SKILL.md"
 
 
