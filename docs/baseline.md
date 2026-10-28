@@ -98,3 +98,43 @@ mattpocock-skills    (16 user-invoked skills)         ~0 tok
 ```
 
 pluneto-skills: 14 skills, ~1766 tokens. mattpocock-skills 1.3.1: 27 skills, ~568 tokens. **Total ~2334 tokens always-on** with every content plugin installed.
+
+## Merge with mattpocock-skills: after (2026-10-28)
+
+Same script, on the `merge-mattpocock` branch after milestone 6.
+
+```
+workflow             build-this                       ~100 tok
+workflow             handoff                          ~0 tok
+workflow             interview                        ~60 tok
+workflow             plan-this                        ~162 tok
+workflow             research-this                    ~262 tok
+workflow             solve-this                       ~140 tok
+workflow             to-questionnaire                 ~0 tok
+workflow             to-tickets                       ~0 tok
+workflow             use-available-skills             ~181 tok
+workflow             wayfinder                        ~0 tok
+workflow             which-skill                      ~0 tok
+workflow             wizard                           ~80 tok
+skill-tools          reflect                          ~0 tok
+skill-tools          skill-ozempic                    ~0 tok
+skill-tools          skill-updater                    ~170 tok
+skill-tools          writing-for-agents               ~30 tok
+engineering          codebase-design                  ~70 tok
+engineering          diagnosing-bugs                  ~43 tok
+engineering          domain-modeling                  ~42 tok
+engineering          improve-codebase-architecture    ~0 tok
+engineering          pr                               ~8 tok
+engineering          prototype                        ~47 tok
+engineering          review-changes                   ~108 tok
+engineering          tdd                              ~38 tok
+design               backend-design-review            ~196 tok
+design               dashboard-design                 ~155 tok
+design               tool-for-users                   ~130 tok
+design               user-types                       ~110 tok
+setup                setup-pluneto-skills             ~0 tok
+
+29 skills, ~2132 tokens always-on
+```
+
+Before ~2334 tokens (41 skills across pluneto-skills and mattpocock-skills) → after **~2132 tokens** (29 skills), −202 tokens (−9%). Claude Code's own estimate (`claude plugin details`, which also counts user-invoked skill names) is ~2,503 tokens for the four content plugins, against ~1,651 for mattpocock-skills alone before.
