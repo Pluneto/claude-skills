@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+"""Estimate the always-on context of the skills in one or more plugin folders.
+
+Usage: scripts/measure-skills <plugin-dir>...
+Same formula as measure-context: (name + description) / 4 tokens per skill,
+0 for skills with disable-model-invocation.
+"""
+import re
+import sys
+from pathlib import Path
+
+FRONTMATTER = re.compile(r"\A---\n(.*?)\n---\n", re.S)
+
+
+def skill_cost(skill_md):
+    match = FRONTMATTER.match(skill_md.read_text(encoding="utf-8"))
+    meta = match.group(1) if match else ""
+    if re.search(r"^disable-model-invocation:\s*true", meta, re.M):
+        return 0
+    name = re.search(r"^name:(.*(?:\n[ \t].*)*)", meta, re.M)
+    desc = re.search(r"^description:(.*(?:\n[ \t].*)*)", meta, re.M)
+    text = (name.group(1) if name else "") + (desc.group(1) if desc else "")
+    return round(len(" ".join(text.split())) / 4)
+
+
+def main(dirs):
+    total = count = 0
+    for plugin_dir in map(Path, dirs):
+        for skill_md in sorted(plugin_dir.glob("skills/**/SKILL.md")):
+            cost = skill_cost(skill_md)
+            print(f"{plugin_dir.name:<20} {skill_md.parent.name:<32} ~{cost} tok")
+            total += cost
+            count += 1
+    print(f"\n{count} skills, ~{total} tokens always-on")
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

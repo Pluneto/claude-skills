@@ -63,3 +63,38 @@ Baseline ~7614 → ~3794 tokens (−50%). The 9 migrated skills still synced fro
 ```
 
 Baseline ~7614 → ~2724 tokens (−64%). user-types and tool-for-users still sync from claude.ai (now also in the `ux` plugin); deleting them there removes a few hundred more.
+
+## Merge with mattpocock-skills: before (2026-10-28)
+
+Measured with `scripts/measure-skills` (plugin folders, same formula) before the `merge-mattpocock` branch changed anything. mattpocock-skills counts only the 27 skills its `plugin.json` ships.
+
+```
+workflow             build-this                       ~95 tok
+workflow             handoff                          ~0 tok
+workflow             plan-this                        ~162 tok
+workflow             research-this                    ~210 tok
+workflow             solve-this                       ~140 tok
+workflow             use-available-skills             ~181 tok
+skill-tools          reflect                          ~96 tok
+skill-tools          skill-ozempic                    ~118 tok
+skill-tools          skill-updater                    ~173 tok
+ux                   tool-for-users                   ~130 tok
+ux                   user-types                       ~110 tok
+design               backend-design-review            ~196 tok
+design               dashboard-design                 ~155 tok
+setup                setup-pluneto-skills             ~0 tok
+mattpocock-skills    code-review                      ~108 tok
+mattpocock-skills    codebase-design                  ~70 tok
+mattpocock-skills    diagnosing-bugs                  ~43 tok
+mattpocock-skills    domain-modeling                  ~42 tok
+mattpocock-skills    pr                               ~8 tok
+mattpocock-skills    prototype                        ~47 tok
+mattpocock-skills    research                         ~62 tok
+mattpocock-skills    tdd                              ~38 tok
+mattpocock-skills    wizard                           ~80 tok
+mattpocock-skills    grilling                         ~40 tok
+mattpocock-skills    writing-for-agents               ~30 tok
+mattpocock-skills    (16 user-invoked skills)         ~0 tok
+```
+
+pluneto-skills: 14 skills, ~1766 tokens. mattpocock-skills 1.3.1: 27 skills, ~568 tokens. **Total ~2334 tokens always-on** with every content plugin installed.
