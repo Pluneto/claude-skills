@@ -1,14 +1,14 @@
 ---
 name: "reflect"
-description: End-of-session retro. Finds friction and repeated work in the session and applies up to five lean edits to project notes or skills. Optionally takes a focus.
+description: End-of-session retro. Finds friction and repeated work in the session, proposes up to five lean edits to project notes or skills, and applies the ones the user approves. Optionally takes a focus.
 disable-model-invocation: true
 ---
 
 # Reflect
 
-Turn this session's avoidable problems into up to five edits, of any size, and apply them (or, for pluneto plugin skills, hand the user a ready prompt), so the next session starts further ahead and needs less of the user.
+Turn this session's avoidable problems into up to five edits, of any size, and apply the ones the user approves (or, for pluneto plugin skills, hand the user a ready prompt), so the next session starts further ahead and needs less of the user.
 
-The more an agent can run on its own, without the user stepping in, the better. That is the lens for the whole retrospective: the best lesson is one that removes a future round-trip to the user, and reflect itself should not add one.
+The more an agent can run on its own, without the user stepping in, the better. That is the lens for the whole retrospective: the best lesson is one that removes a future round-trip to the user. Reflect itself spends exactly one: the interview in step 4, where the user decides which edits to make.
 
 Every line of instructions is read by every future session. The goal is therefore not to record what happened but to make the instructions better, and shorter where possible. Making no changes is a valid outcome. If the user names a focus (`/reflect the build setup`), review only that. If they name another session, read its transcript from the session logs on this machine instead of this one.
 
@@ -21,8 +21,9 @@ Review the session for friction, strongest signal first:
 - commands or tools failed, or there were retries, dead ends, and workarounds
 - something had to be guessed that a note would have answered (a command, path, convention, quirk)
 - a skill misled, was ambiguous, skipped a needed step, or should have triggered and didn't
+- a skill the work needed was blocked or skipped (`disable-model-invocation`, a missing trigger, a description that hid it), so the agent worked without it
 
-For each one, ask which instruction, present at the start of the session, would have prevented it. That is the root cause; the symptom is not. Drop one-offs (typos, a flaky network, details of this specific task) and keep what is likely to recur. If nothing is worth keeping, say so in a sentence and stop.
+For each one, ask which instruction, present at the start of the session, would have prevented it. That is the root cause; the symptom is not. Verify a suspected cause with evidence (metrics, logs, a re-run) before blaming it, because an unverified cause becomes a wrong instruction. When the cause stays unclear, or the fix depends on outside facts (how a tool, service or API behaves), run the research-this skill at quick depth on it first. Drop one-offs (typos, a flaky network, details of this specific task) and keep what is likely to recur. If nothing is worth keeping, say so in a sentence and stop.
 
 Also look for procedures, helper scripts or dictated checklists repeated in the session.
 
@@ -71,9 +72,9 @@ A **new skill** must also show evidence of repetition from this session (or a cl
 
 Rank what survives by expected payoff and cut from the bottom. Say plainly when you dropped candidates (one line is enough).
 
-## 4. Apply, then report
+## 4. Interview, then apply
 
-Do not ask for approval; the user wants less back-and-forth, and every edit is small, visible and easy to revert.
+Show the findings first, as visible reply text in step 5's block format (Problem, proposed Change, Net effect), plus the dropped candidates in one line. Then interview the user on which edits to make: run the interview skill, or ask with the question tool, one question per edit (up to 4 per call), worded so "yes" accepts your recommendation, with apply, adjust and drop as options. A typed answer can reshape an edit or add one. Apply only the approved edits, as below.
 
 - **Project notes**: edit in the file's own style, in place rather than appended wherever an existing line should change.
 - **Existing skills**: hand the edit and the evidence from this session to the skill-updater skill, which makes the change and delivers it the right way (a same-name `.skill` file for skills installed in claude.ai, an in-place edit for repository skills). It applies the edit without asking.
@@ -94,7 +95,7 @@ If the user names a change they do not want, or says something is wrong, revise 
 
 ## 5. Report
 
-Show what changed in a message the user will actually see (not narration between tool calls), one block per edit:
+After applying, show what changed in a message the user will actually see (not narration between tool calls), one block per edit:
 
 **Edit N: short title**
 - **Problem**: what happened, and why it will recur.

@@ -21,7 +21,7 @@ The more a skill lets the agent finish on its own, the better. When an edit touc
 
 ### 1. Pin down the change
 
-Get the target skill's name and the change wanted. Sources: the user's request, or an edit from /reflect (its Problem / Change text and session evidence). Edits from /reflect are applied as given; don't add an approval round. If the request is vague ("improve the pdf skill"), infer the most likely change from the session (what went wrong, what the user corrected), apply it, and say which reading you took. Ask one short question only when the session gives no hint at all.
+Get the target skill's name and the change wanted. Sources: the user's request, or an edit from /reflect (its Problem / Change text and session evidence). Edits from /reflect were already approved in its interview: apply them as given, without another approval round. If the request is vague ("improve the pdf skill"), infer the most likely change from the session (what went wrong, what the user corrected), apply it, and say which reading you took. Ask one short question only when the session gives no hint at all.
 
 ### 2. Find where the skill lives
 
@@ -83,4 +83,4 @@ Finish with two or three lines: what changed, where, and (for cloud skills) the 
 
 ## Working with /reflect
 
-/reflect decides skill edits on its own and reports them afterwards; skill-updater is where such an edit gets applied. When /reflect hands over an edit plus its session evidence, go straight to step 2, apply it, and deliver. Apply the generality check from the principle above one last time: if the wording is too specific to this session, tighten it to the general rule and tell the user what you did and why. When the user is applying lessons from /reflect to several skills, handle each skill separately and give each its own `.skill` file.
+/reflect proposes skill edits and the user approves them in its interview; skill-updater is where an approved edit gets applied. When /reflect hands over an edit plus its session evidence, go straight to step 2, apply it, and deliver. Apply the generality check from the principle above one last time: if the wording is too specific to this session, tighten it to the general rule and tell the user what you did and why. When the user is applying lessons from /reflect to several skills, handle each skill separately and give each its own `.skill` file.
