@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Break a plan, spec, or conversation into a set of **tickets**: tracer-bullet vertical slices, each declaring the tickets that **block** it.
 
-**Tracker:** follow `docs/agents/issue-tracker.md` (setup-pluneto-skills writes it): it says where tickets go and which labels mark them. When the repo has none, read [no-tracker-doc.md](no-tracker-doc.md) before publishing.
+**Tracker:** follow `docs/agents/issue-tracker.md` (setup-pluneto-skills writes it): it says where tickets go and which labels mark them. When the repo has none, read [no-tracker-doc.md](no-tracker-doc.md) and ask its tracker question before publishing, also for an agreed plan file: no plan says where its tickets go.
 
 ## Process
 
@@ -43,7 +43,7 @@ Mark each ticket **agent** or **human**. **Human** when the user must do its cor
 
 ### 4. Quiz the user
 
-When the source is an agreed plan file, skip the questions: its interview already settled the work. Show the breakdown below in one message and go on to step 5.
+When the source is an agreed plan file, skip the breakdown questions below (not the tracker question): its interview already settled the work. Show the breakdown below in one message and go on to step 5.
 
 Otherwise, present the proposed breakdown as a numbered list. For each ticket, show:
 
