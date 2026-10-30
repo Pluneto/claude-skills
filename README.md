@@ -6,13 +6,13 @@ An agent-skills marketplace: plan-then-build workflows, engineering practice, sk
 
 | Plugin | Skills | Install |
 |---|---|---|
-| `workflow` | plan-this, interview, build-this, solve-this, research-this, use-available-skills, wayfinder, to-tickets, to-questionnaire, wizard, handoff, which-skill | per project |
+| `workflow` | plan-this, interview, build-this, solve-this, research-this, use-available-skills, wayfinder, to-tickets, dispatch, to-questionnaire, wizard, handoff, which-skill | per project |
 | `engineering` | tdd, diagnosing-bugs, review-changes, pr, prototype, codebase-design, improve-codebase-architecture, domain-modeling | per project |
 | `skill-tools` | writing-for-agents, skill-updater, skill-ozempic, reflect | per project |
 | `design` | backend-design-review, dashboard-design, user-types, tool-for-users | per project |
 | `setup` | setup-pluneto-skills (`/setup:setup-pluneto-skills`, user-invoked only) | user scope, once per machine |
 
-Not sure which to use? Type `/which-skill`. The main flow is `/plan-this` → `/build-this` (which ends with review-changes) → `/reflect`; `/to-tickets` splits a plan for multi-session work.
+Not sure which to use? Type `/which-skill`. The main flow is `/plan-this` → `/build-this` (which ends with review-changes) → `/reflect`; `/to-tickets` splits a plan for multi-session work, and `/dispatch` runs those tickets as waves of parallel workers.
 
 ## Install
 
