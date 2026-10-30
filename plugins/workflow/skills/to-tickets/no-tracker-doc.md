@@ -1,0 +1,8 @@
+# No tracker doc
+
+Read by to-tickets and wayfinder when the repo has no `docs/agents/issue-tracker.md`: nothing says where tickets go, so this run asks.
+
+1. **Ask once**: GitHub Issues or local files under `plans/`. Recommend local when `plans/*/tickets/` already holds tickets, else GitHub when `git remote -v` points at GitHub, else local. Add one line: `/setup:setup-pluneto-skills` records the choice (and creates the labels), so later runs skip this question. Done when the user has picked.
+2. **Use these defaults for this run.**
+   - **GitHub**: check the target with `gh repo view --json nameWithOwner` (stop if it fails; in a fork, confirm the repo with the user). Labels: `ready-for-agent` and `ready-for-human` for to-tickets tickets, `wayfinder:map` and `wayfinder:<type>` for wayfinder. Before the first create, run `gh label list --json name --limit 1000` and create each missing label with `gh label create "<name>"` (no `--force`). Blocking: `gh issue create --blocked-by <n>,<n>` (gh 2.94+), else a `Blocked by: #<n>` line at the top of the body. Sub-issues: `gh issue create --parent <n>`. Claim: comment `claimed by <branch>` and add the `in-progress` label; a ticket is claimed while its latest `claimed by` or `released:` comment is a claim.
+   - **Local**: `plans/<slug>/`, with `map.md` for a wayfinder map and one file per ticket at `tickets/NN-<slug>.md`, numbered from 01 blockers first. Each ticket starts with `Who: agent|human` (to-tickets), `Type: research|prototype|interview|task` (wayfinder), `Blocked by: NN, NN` (or `None`) and `Status: open|claimed|resolved`; the answer goes under `## Answer`. Claim: set `Status: claimed` before any work.

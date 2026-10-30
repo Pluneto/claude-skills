@@ -10,7 +10,7 @@ Two-axis review of the diff between `HEAD` and a fixed point the caller or user 
 
 Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
 
-Tickets live where `docs/agents/issue-tracker.md` says, or as local files under `plans/` when the repo has no such file.
+Tickets live where `docs/agents/issue-tracker.md` says. Without it, look for local files under `plans/` and for the issues the commits reference.
 
 **Called by a skill** (build-this passes the base SHA it recorded and the plan or ticket path): use what it passed and ask nothing. Under **autopilot**, likewise never ask: fall back to the merge-base with the default branch, skip the Spec axis if no spec is found, and say so in the report.
 
