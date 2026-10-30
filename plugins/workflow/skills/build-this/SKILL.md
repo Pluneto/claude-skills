@@ -15,7 +15,10 @@ Use the first of these that exists:
 
 1. **The plan agreed earlier in this conversation** (the usual case when /plan-this hands off): the deepened goal, decisions, milestones and checks from its confirmed summary.
 2. **A plan file** passed as the skill's argument, attached, or in the project (`plans/plan-*.md`, or `plan-*.md` in the root). Read all of it.
-3. **Tickets from /to-tickets**: a folder (`plans/<feature>/tickets/`) or an issue list. Each ticket is a milestone and its acceptance criteria are its done-when check. Work them in blocker order (a ticket starts once every ticket in its `Blocked by` is done), and mark each resolved (`Status: resolved`, or close the issue) when its check passes.
+3. **Tickets from /to-tickets**: a folder (`plans/<feature>/tickets/`) or an issue list, worked by `docs/agents/issue-tracker.md` (its Claim, Release and Parallel work sections). Each ticket is a milestone and its acceptance criteria are its done-when check. Work them in blocker order (a ticket starts once every ticket in its `Blocked by` is done).
+   - **Human tickets** (the human label, or `Who: human`) are the user's: skip them, keep working every agent ticket they don't block, and list them in the report with what each needs.
+   - **Claim** each ticket before its first change, as the tracker doc's Claim says. When the claim is lost, another worker holds it: leave that ticket and the tickets it blocks, and report the winning claim.
+   - **Finish** each ticket when its check passes. On GitHub, open the PR with `Fixes #<n>` in its body and land it with the doc's Land command (polling its status command), or, when the field is blank, by its fallback; then release as in its Release (Done). Locally, set `Status: resolved`.
 4. **A plan the user wrote themselves**, in a message or a document.
 
 If there's no plan, look at the size of the request. Small and clear: just build it, treating the request as a one-milestone plan. Big or ambiguous: offer /plan-this in one line (*"This has a lot of open choices. Want to plan it first with /plan-this, or should I just build with sensible defaults?"*) and go with their answer.
@@ -134,5 +137,5 @@ Give one report, short and scannable:
 - **Review:** what review-changes found, what you fixed, and the judgement calls left for the user (or "skipped" and why).
 - **Skills used**, per milestone, each with its reason line (Need / Provides / Without it) and what it changed (or "no visible effect"), any skill skipped at build time with why, or "none"; plus the plan's "Skills used while planning" line if it has one, and a note if the helper was not found.
 - **Decisions and deviations** you made on the user's behalf, each with a one-line reason.
-- **Blocked or failing**, if anything, and what would unblock it.
+- **Blocked or failing**, if anything, and what would unblock it, including human tickets skipped and claims lost to another worker.
 - **What's left for you:** the "can wait" items and anything collected along the way, each with exactly where it goes, plus the hard-to-undo steps waiting for their go-ahead (deploy, publish, send). If they give the go-ahead or the items, finish those steps and re-run the affected checks.
