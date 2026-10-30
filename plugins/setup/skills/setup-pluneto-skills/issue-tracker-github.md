@@ -65,6 +65,7 @@ Read by dispatch and by its worker prompts. A blank field uses the fallback in b
 - **Land command**: [blank: push the branch, open the PR with `Fixes #<n>`, watch CI, merge per the repo owner's rule]
 - **Land status command**: [blank: `gh pr checks <pr>`, re-run every few minutes until no check is pending; "no checks reported" means the repo has no CI, so treat it as green]
 - **Areas map**: `docs/agents/areas.md` [missing: dispatch infers areas from the issues and `git log --name-only`]
+- **Model tiers**: [blank: each provider's default model; dispatch still suggests the effort]. One line per T3 provider, its `light / standard / strong` models by their T3 model ids, for example `Codex (pool): <light> / <standard> / <strong>`. List only models the subscription behind that provider serves; one model may fill several tiers.
 
 ## When a skill says "publish to the issue tracker"
 

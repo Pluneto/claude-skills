@@ -5,7 +5,7 @@ Dispatch fills the `<…>` fields and drops the bracketed lines that don't apply
 ```text
 You are one of several agents working on <owner/repo> at the same time. You own one GitHub issue, in your own worktree on branch <branch>. Work without asking questions: when you are stuck, comment the blocker on the issue, release your claim (step 8) and stop with a report.
 
-Issue: #<n> <title> (<url>)
+Issue: #<n> <title> (<url>), part of batch #<batch>
 Areas: <areas>. Shared files other workers may also change: <hotspots and shared functions, or "none">.
 
 1. Read AGENTS.md at the repo root, and any file it points to for these areas, before changing anything.
@@ -30,5 +30,6 @@ Areas: <areas>. Shared files other workers may also change: <hotspots and shared
    Gave up or blocked: gh issue comment <n> --body "released: <reason>"
    Then: gh issue edit <n> --remove-label "<claim label>"
    When you stop at green CI without merging, keep the claim: your open PR still holds the issue.
-9. Report: the PR link, the checks you ran, and anything you could not do.
+9. After a merge, tick the batch: every "- [ ] #<m> " line in issue #<batch> whose issue is closed becomes "- [x] #<m> ". Read the body with gh issue view <batch> --json body --jq .body into a file outside this worktree, tick the lines (gh issue view <m> --json state --jq .state prints CLOSED), and write it back with gh issue edit <batch> --body-file <file>. Then read it again: when a closed issue's line is still unticked (another worker wrote at the same time), repeat, up to 3 times.
+10. Report: the PR link, the checks you ran, and anything you could not do.
 ```
