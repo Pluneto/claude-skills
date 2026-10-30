@@ -77,7 +77,7 @@ Rank what survives by expected payoff and cut from the bottom. Say plainly when 
 Show the findings first, as visible reply text in step 5's block format (Problem, proposed Change, Net effect), plus the dropped candidates in one line. Then interview the user on which edits to make: run the interview skill, or ask with the question tool, one question per edit (up to 4 per call), worded so "yes" accepts your recommendation, with apply, adjust and drop as options. A typed answer can reshape an edit or add one. Apply only the approved edits, as below.
 
 - **Project notes**: edit in the file's own style, in place rather than appended wherever an existing line should change.
-- **Existing skills**: hand the edit and the evidence from this session to the skill-updater skill, which makes the change and delivers it the right way (a same-name `.skill` file for skills installed in claude.ai, an in-place edit for repository skills). It applies the edit without asking.
+- **Existing skills**: hand the edit and the evidence from this session to the skill-updater skill, which makes the change and delivers it the right way (a same-name `.skill` file for skills installed in claude.ai, an in-place edit for repository skills). It applies the edit without asking about its content, and asks before committing or pushing.
 - **Pluneto plugin skills**: the user runs these edits themselves, in a session of their choosing, so your output is a prompt and the plugin's files stay as they are. Read the skill's current SKILL.md (the installed copy under `~/.claude/plugins/cache/pluneto-skills/` is fine for reading), then write one prompt per skill, covering all its edits, in a fenced block the user can paste into a fresh session:
 
   ```

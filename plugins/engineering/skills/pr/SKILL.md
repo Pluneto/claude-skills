@@ -12,6 +12,8 @@ metadata:
 Use this template for writing the PR body:
 
 ```markdown
+Fixes #<n>
+
 ## Summary
 
 <diagram, diff-sketch, or tree>
@@ -34,7 +36,7 @@ Use this template for writing the PR body:
 
 ## Sections
 
-Skip all preambles and keep prose brief. Use the user's domain language from `GLOSSARY.md`.
+Start with `Fixes #<n>` when the work comes from a tracked issue (merging then closes it; one line per issue), and leave it out otherwise. Beyond that line, skip all preambles and keep prose brief. Use the user's domain language from `GLOSSARY.md`.
 
 ### Summary
 

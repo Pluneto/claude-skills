@@ -1,6 +1,6 @@
 ---
 name: "skill-updater"
-description: Update or modify an existing skill, and nothing else. Use whenever the user wants to change, fix, tighten, extend, or refactor a skill that already exists (e.g. "update the X skill", "the skill got Y wrong, fix it", "add this lesson to the skill"), and whenever /reflect has a skill edit to apply. Handles skills installed in claude.ai (returns a same-name .skill file to upload), skills from a plugin marketplace whose source repo is cloned locally (edits the source, commits and pushes), and skills that live in a repository (edits them in place). Does not create new skills (use skill-creator) and never runs benchmarks, evals, or description-optimization loops.
+description: Update or fix an existing skill (not create one). Use when the user wants to change, fix, tighten or extend an existing skill, or when /reflect or /skill-ozempic hands over an approved edit.
 ---
 
 # Skill Updater
@@ -21,13 +21,13 @@ The more a skill lets the agent finish on its own, the better. When an edit touc
 
 ### 1. Pin down the change
 
-Get the target skill's name and the change wanted. Sources: the user's request, or an edit from /reflect (its Problem / Change text and session evidence). Edits from /reflect were already approved in its interview: apply them as given, without another approval round. If the request is vague ("improve the pdf skill"), infer the most likely change from the session (what went wrong, what the user corrected), apply it, and say which reading you took. Ask one short question only when the session gives no hint at all.
+Get the target skill's name and the change wanted. Sources: the user's request, or an edit from /reflect (its Problem / Change text and session evidence). Edits from /reflect were already approved in its interview: apply them as given, without another approval round. That approval covers the content only; committing and pushing still need their own yes (step 6). If the request is vague ("improve the pdf skill"), infer the most likely change from the session (what went wrong, what the user corrected), apply it, and say which reading you took. Ask one short question only when the session gives no hint at all.
 
 ### 2. Find where the skill lives
 
 Check all three places before deciding how to deliver:
 
-- **Marketplace skill**: a plugin skill (listed as `plugin:skill`) whose marketplace source repo is cloned locally. Pluneto's own skills live in the local clone of `Pluneto/skills` (usually `~/github/skills`; otherwise find a clone whose `git remote -v` is Pluneto/skills), at `plugins/<plugin>/skills/<name>/` (marketplace `pluneto-skills`). The installed copy under `~/.claude/plugins/cache/` is a read-only cache; edit the source.
+- **Marketplace skill**: a plugin skill (listed as `plugin:skill`) whose marketplace source repo is cloned locally. Pluneto's own skills live in a local clone of `Pluneto/skills`, at `plugins/<plugin>/skills/<name>/` (marketplace `pluneto-skills`). Everything under `~/.claude/plugins/` (`cache/` and `marketplaces/`) is a managed copy that updates overwrite, even though `marketplaces/` is a git clone with the same remote: read it, edit elsewhere. Find the source clone outside `~/.claude/` (`find ~ -maxdepth 5 -path '*/.claude-plugin/marketplace.json' -not -path '*/.claude/*'`, then check `git remote -v`); when none turns up, ask the user once where it is.
 - **Repository skill**: a skill folder in the working project that is writable (typically `.claude/skills/<name>/` or a `skills/` directory). Search for `**/<name>/SKILL.md`.
 - **Cloud skill**: a skill installed in claude.ai. Its files are read-only here (for example under `/mnt/skills/` or an uploads folder), or it is only known by name from the skills list.
 
@@ -35,7 +35,7 @@ Delivery follows from this:
 
 | Where it exists | What to do |
 |---|---|
-| Marketplace source repo (wins over any claude.ai copy, which is then stale) | `git pull`, edit it in the source repo, commit to `main` and push (step 6). |
+| Marketplace source repo (wins over any claude.ai copy, which is then stale) | `git pull`, edit it in the source repo, then commit and push only on the user's yes (step 6). |
 | Cloud (claude.ai), with or without a repo copy | Edit a working copy and deliver a downloadable `.skill` file (step 5). If a repo copy also exists, apply the same edit there directly so the two don't drift. |
 | Repository only | Edit it in place yourself. No `.skill` file needed. Don't commit or push unless asked. |
 | Neither found | Say so and ask where the skill is, or whether the user wants a new skill (that is skill-creator's job). |
@@ -75,7 +75,7 @@ If the user explicitly asks for real test runs, hand off to skill-creator.
 4. Check the archive contains `<name>/SKILL.md` at the top level (`unzip -l`), then send the file to the user with the file-delivery tool (`SendUserFile` or `present_files`). Never hand over raw SKILL.md text in place of the packaged file.
 5. Tell the user in a line or two what changed and that they need to upload it manually in claude.ai (Settings → Capabilities → Skills), replacing the existing version. The edit isn't live until they do.
 
-**Marketplace skill:** commit only the skill's files (stage them by name) to `main` and push. The repo's pre-commit hook regenerates and validates the marketplace; if it fails, fix the cause and commit again, never `--no-verify`. Tell the user installed copies pick it up on the next auto-update, or now with `/plugin marketplace update <marketplace>` then `/reload-plugins`.
+**Marketplace skill:** the repo's own `AGENTS.md` or `CLAUDE.md` rules win over this paragraph. Add a patch bump (`python3 scripts/bump <plugin>`) to the change, since installed copies update only when the version changes and validate rejects changed plugins with an unchanged version. Show the diff (the skill's files plus that `plugin.json`) and ask before committing: approving an edit's content is not approving a push to a public repo. On yes, stage those files by name, commit to `main` and push. If the pre-commit hook fails, report its output and stop (never `--no-verify`). Tell the user installed copies pick it up on the next auto-update, or now with `/plugin marketplace update <marketplace>` then `/reload-plugins`.
 
 **Repository-only skill:** the edit is already made; say which file changed and what changed.
 

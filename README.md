@@ -74,19 +74,19 @@ The `ux` plugin was merged into `design`, and mattpocock-skills is now vendored 
 
 1. Edit `plugins/<plugin>/skills/<skill>/SKILL.md` (copy files in; symlinks are rejected). A new skill also needs `agents/openai.yaml` and a line in `which-skill`.
 2. Bump the plugin's version: `scripts/bump <plugin>` (patch; pass `minor` or `major` for bigger changes). Installed copies only update when the version changes, and `scripts/validate` fails if a plugin changed since `origin/main` without a bump.
-3. Commit to `main` and push. The pre-commit hook regenerates `.claude-plugin/marketplace.json` and each plugin's `skills` list, then validates everything.
+3. Run `scripts/build-marketplace` (it regenerates `.claude-plugin/marketplace.json` and each plugin's `skills` list), stage everything, then commit to `main` and push. The pre-commit hook refuses unstaged or untracked changes under `.claude-plugin/`, `plugins/` and `scripts/` (so it checks exactly what is committed), fails if the generated files are out of date, and runs `scripts/validate`.
 
 New plugin: add `plugins/<name>/.claude-plugin/plugin.json` (`name`, `version`, `description`, `author`, `license`) and a `skills/` folder.
 
-After cloning, enable the hook: `git config core.hooksPath scripts/hooks` (needs `claude` and Python 3 with PyYAML). The hook also refuses commits whose author email is not a GitHub noreply address, so a personal address never lands in public history: `git config user.email <id>+<user>@users.noreply.github.com`.
+After cloning, enable the hook: `git config core.hooksPath scripts/hooks` (needs `claude` and Python 3 with PyYAML). The hook also refuses commits whose author or committer email is not a GitHub noreply address, so a personal address never lands in public history: `git config user.email <id>+<user>@users.noreply.github.com`.
 
 ## Scripts
 
-- `scripts/build-marketplace`: regenerates the marketplace file and each plugin.json's `skills` list, and checks skill frontmatter (valid YAML, `name` matches the folder, `description` present) and that there are no symlinks.
-- `scripts/validate`: `claude plugin validate --strict` on the marketplace and every plugin, plus the repo's checks: versions bumped, `agents/openai.yaml` matching each skill's invocation, licences kept on vendored skills, every skill named in which-skill.
+- `scripts/build-marketplace`: regenerates the marketplace file and each plugin.json's `skills` list, and checks skill frontmatter (valid YAML, `name` matches the folder, `description` present) and that there are no symlinks. It writes nothing when a check fails; `--check` writes nothing and fails when a generated file is out of date.
+- `scripts/validate`: `claude plugin validate --strict` on the marketplace and every plugin, plus the repo's checks: versions bumped (untracked files count as changes), `agents/openai.yaml` matching each skill's invocation, licences kept on vendored skills, every skill named in which-skill as a whole word, generated files current (`build-marketplace --check`), and the files copied into several skills still identical (`PAIRED` in the script).
 - `scripts/bump`: bumps a plugin's version.
 - `scripts/measure-context`: estimates always-on skill tokens outside any project (see `docs/baseline.md`); `scripts/measure-skills <plugin-dir>...` does the same for plugin folders.
 
 ## Licence
 
-MIT, see [LICENSE](LICENSE). Many skills are adapted from [mattpocock/skills](https://github.com/mattpocock/skills) 1.3.1 (MIT, (c) 2026 Matt Pocock; his notice is kept in each copied folder): handoff, wayfinder, to-tickets, to-questionnaire, wizard, which-skill, writing-for-agents and every `engineering` skill. `docs/merge-map.md` lists what came from where. `engineering/skills/pr` also credits Dex Horthy (see its `CREDITS.md`). Anthropic's source-available skills (docx, pdf, pptx, xlsx, …) are deliberately not included.
+MIT, see [LICENSE](LICENSE). Many skills are adapted from [mattpocock/skills](https://github.com/mattpocock/skills) 1.3.1 (MIT, (c) 2026 Matt Pocock; his notice is kept in each copied folder): handoff, wayfinder, to-tickets, to-questionnaire, wizard, which-skill, writing-for-agents, setup-pluneto-skills (from setup-matt-pocock-skills) and every `engineering` skill. `docs/merge-map.md` lists what came from where. `engineering/skills/pr` also credits Dex Horthy and carries HumanLayer's MIT licence for the part it reproduces (see its `CREDITS.md`). Anthropic's source-available skills (docx, pdf, pptx, xlsx, …) are deliberately not included.

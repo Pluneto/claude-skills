@@ -14,7 +14,7 @@ A **flow** is a path through the skills. Most work travels the **main flow**; **
 
 ## The main flow: goal → shipped (workflow, engineering)
 
-1. **`/plan-this`** (workflow) deepens the goal the way a top professional would, researches what already exists (research-this), interviews you over a design tree (interview), and saves a plan with milestones and checks.
+1. **`/plan-this`** (workflow) deepens the goal the way a top professional would, researches what already exists (research-this), interviews you over a design tree (interview), and ends with a plan with milestones and checks: saved as a file, handed straight to build-this, or both.
 2. **Branch: is this a multi-session build?**
    - **No** (the usual case) → **`/build-this`** works the plan milestone by milestone.
    - **Yes** → **`/to-tickets`** (workflow) splits the saved plan into tracer-bullet tickets with blocking edges (local files under `plans/<feature>/tickets/`, or GitHub Issues, as the repo's tracker doc says), then **`/build-this`** works the tickets in blocker order, one session or several. To run them **in parallel** (GitHub tracker only), **`/dispatch`** (workflow) groups them into waves that touch no shared hotspot, writes a tracking issue with a self-contained prompt per ticket (Claude or Codex), and launches a wave as T3 threads when you reply `launch wave N`.

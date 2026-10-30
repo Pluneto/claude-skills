@@ -1,6 +1,6 @@
 ---
 name: "use-available-skills"
-description: Decide, on evidence, whether any other available skill (user, project, plugin or claude.ai) is worth using for the current task or phase, and use only those with a specific written reason, without asking the user anything. The default is no skill; most of the time none passes, and that is a fine outcome. Use it at the start of a non-trivial task and at each new phase of work (planning, designing, building, reviewing, writing), and whenever plan-this, build-this or solve-this needs to choose skills, even when the user never mentions skills. plan-this, build-this and solve-this call it themselves at the right moment, so don't start a separate run inside them. Not for trivial one-step requests.
+description: Decide, on evidence, whether any other available skill (user, project, plugin or claude.ai) is worth using for the current task or phase, and use only those with a specific written reason, without asking the user anything. The default is no skill; most of the time none passes, and that is a fine outcome. Use it at the start of a non-trivial task and at each new phase of work (planning, designing, building, reviewing, writing), and whenever plan-this or build-this needs to choose skills, even when the user never mentions skills. plan-this and build-this call it themselves at the right moment, so don't start a separate run inside them (or inside solve-this, which runs both). Not for trivial one-step requests.
 ---
 
 # Use available skills

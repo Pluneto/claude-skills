@@ -1,5 +1,7 @@
 # Merge map: mattpocock-skills → pluneto-skills
 
+> Snapshot as of the 2026-10-28 merge. Plugin contents and versions have changed since (for example `dispatch` joined `workflow`); the README and the `plugin.json` files are current.
+
 Source: mattpocock-skills **1.3.1** (MIT, (c) 2026 Matt Pocock), from `~/.claude/plugins/cache/claude-plugins-official/mattpocock-skills/1.3.1/`. Diff a later upstream release against this version to pick up improvements. The plan is `plan-merge-mattpocock-skills.md` in the `plans/` folder above this clone (moved to `plans/archive/` once merged).
 
 ## Matt's skills

@@ -22,7 +22,7 @@ The map is a single issue on this repo's issue tracker, labelled with the map la
 
 The map is an **index**, not a store. It lists the decisions made and points at the tickets that hold their detail; a decision lives in exactly one place, its ticket, so the map never restates it, only gists it and links.
 
-**Where the map, its child tickets, blocking, and frontier queries physically live is tracker-specific.** **Tracker:** follow `docs/agents/issue-tracker.md`: its "Wayfinding operations" section says how _this_ repo expresses them, and its Labels table gives this repo's names for the map and type labels ("Label in this repo"; the names below are the defaults). When the repo has none, read [no-tracker-doc.md](../to-tickets/no-tracker-doc.md) before creating anything.
+**Where the map, its child tickets, blocking, and frontier queries physically live is tracker-specific.** **Tracker:** follow `docs/agents/issue-tracker.md`: its "Wayfinding operations" section says how _this_ repo expresses them, and its Labels table gives this repo's names for the map and type labels ("Label in this repo"; the names below are the defaults). When the repo has none, read [no-tracker-doc.md](no-tracker-doc.md) before creating anything.
 
 ### The map body
 
@@ -62,7 +62,7 @@ Each ticket is a **child issue** of the map; the tracker's issue id is its ident
 <the decision or investigation this ticket resolves>
 ```
 
-Each ticket carries the label of its type (`wayfinder:<type>` by default), one of `research`, `prototype`, `interview`, `task` (see [Ticket Types](#ticket-types)). The map and type labels are the only labels a map and its tickets carry: they are decisions, not implementation work.
+Each ticket carries the label of its type (`wayfinder:<type>` by default), one of `research`, `prototype`, `interview`, `task` (see [Ticket Types](#ticket-types)). Besides the claim label, the map and type labels are the only labels a map and its tickets carry: they are decisions, not implementation work.
 
 A session **claims** a ticket **first**, before any work, as the tracker doc's Claim says, so concurrent sessions skip it. Its claim is the only one: an open ticket without a live claim is unclaimed.
 
@@ -74,7 +74,7 @@ The answer isn't part of the body; it's recorded on resolution (see [Work throug
 
 Every ticket is either **HITL** (human in the loop, worked _with_ a human who speaks for themselves) or **AFK**, driven by the agent alone. A HITL ticket only resolves through that live exchange; the agent never stands in for the human's side of it (an interviewing agent that answers its own questions has broken this).
 
-- **Research** (AFK): Reading documentation, third-party APIs, or local resources like knowledge bases to surface a fact a decision waits on. Resolved by a subagent that invokes the `research-this` skill in facts mode (in Claude Code, call the Skill tool with `research-this`). Use when knowledge outside the current working directory is required.
+- **Research** (AFK): Reading documentation, third-party APIs, or local resources like knowledge bases to surface a fact a decision waits on. Resolved by a sub-agent briefed with research-this's facts-mode rules as plain text (see Chart the map, step 5), or by the `research-this` skill in facts mode in the session itself (in Claude Code, call the Skill tool with `research-this`). Use when knowledge outside the current working directory is required.
 - **Prototype** (HITL): Raise the fidelity of the discussion by making a cheap, rough, concrete artifact to react to (an outline, a rough take, a stub, or UI/logic code) by invoking the `prototype` skill, if available (in Claude Code, call the Skill tool with `prototype`). Links the prototype as an asset. Use when "how should it look" or "how should it behave" is the key question.
 - **Interview** (HITL): Conversation. The default case. Invoke two skills, one call each: `interview`, then `domain-modeling` if available.
 - **Task** (HITL or AFK): Manual work that must happen before a _decision_ can be made: nothing to decide, prototype, or research, but the discussion is blocked until it's done. Signing up for a service so its API can be judged, provisioning access, moving data so its shape can be seen. This is the one type that _does_ rather than decides, and it earns its place by unblocking a decision, not by delivering the destination. The agent drives it alone where it can (AFK); otherwise it hands the human a precise checklist (HITL). Resolved when the work is done; the answer records what was done and any resulting facts (credentials location, new URLs, row counts) later tickets depend on.
@@ -112,8 +112,8 @@ User invokes with a loose idea.
 2. **Map the frontier.** Interview again, **breadth-first** this time: fan out across the whole space rather than deep on any one thread, surfacing the open decisions and the first steps takeable now. **If this surfaces no fog** (the way to the destination is already clear, the whole journey small enough for one session), you don't need a map. Stop and ask the user how they'd like to proceed.
 3. **Create the map** (with the map label): Destination and Notes filled in, Decisions-so-far empty, the fog sketched into **Not yet specified**.
 4. **Create the tickets you can specify now** as child issues of the map, then wire blocking edges in a **second pass** (issues need ids before they can reference each other). Write cross-references in that pass too, with real ids: a placeholder `#<n>` auto-links to an unrelated issue. Wiring sorts them into the frontier and the blocked; everything you can't yet specify stays in the fog: the **Not yet specified** section.
-5. **Fire the research subagents.** For each `research` ticket you just created, spin up a subagent that invokes `research-this` in facts mode to resolve it in parallel, saving its cited file beside the map (`plans/<effort>/research/<name>.md` locally, or on a throwaway `research/<name>` branch on a remote tracker, pushed but never merged) with a context pointer from the ticket.
-6. Stop: charting is one session's work; it hand-resolves nothing.
+5. **Resolve the research tickets.** Claim each `research` ticket you just created, then start one sub-agent per ticket, in parallel. Sub-agents often can't see skills, so give each a self-contained brief with research-this's facts-mode rules as plain text: the ticket's question; primary sources only (official docs, source code, specs); each claim with its source URL and fetch date; a Gaps section; return the findings as Markdown text, write no files and run no git commands (they share your working tree). As each returns, record it: locally, save it beside the map (`plans/<effort>/research/<name>.md`) and link it from the ticket; on a remote tracker, post it as the resolution comment. Then resolve the ticket as in Work through the map, step 4. Done when every research ticket is closed with its findings recorded.
+6. Stop: charting is one session's work; beyond the research tickets, it resolves nothing.
 
 ### Work through the map
 

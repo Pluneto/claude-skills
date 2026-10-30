@@ -1,5 +1,7 @@
 # Merge review: `merge-mattpocock`
 
+> Snapshot as of the 2026-10-28 merge. Plugin contents and versions have changed since (for example `dispatch` joined `workflow`); the README and the `plugin.json` files are current.
+
 What the branch changed, how it was checked, and what is still unproven. The keep/merge/drop decisions are in [merge-map.md](merge-map.md); before and after token counts are in [baseline.md](baseline.md). Review with `git diff origin/main...merge-mattpocock`.
 
 ## Commits

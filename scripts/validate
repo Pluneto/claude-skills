@@ -7,7 +7,9 @@ then the repo's own checks:
 - every skill has agents/openai.yaml, with allow_implicit_invocation: false
   exactly when SKILL.md has disable-model-invocation: true
 - every skill copied from mattpocock/skills keeps its LICENSE
-- every skill is named in the which-skill router
+- every skill is named in the which-skill router (as a whole word)
+- the generated marketplace files are current (scripts/build-marketplace --check)
+- files kept as identical copies in several skills (PAIRED) still match
 """
 import json
 import re
@@ -25,6 +27,14 @@ VENDORED = {"tdd", "diagnosing-bugs", "review-changes", "pr", "prototype", "code
             "to-questionnaire", "wizard", "writing-for-agents", "handoff", "which-skill",
             "setup-pluneto-skills"}
 ROUTER = ROOT / "plugins" / "workflow" / "skills" / "which-skill" / "SKILL.md"
+# Files copied into several skills (no symlinks allowed): each group must stay identical.
+PAIRED = [
+    ["plugins/design/skills/user-types/scripts/ux.py", "plugins/design/skills/tool-for-users/scripts/ux.py"],
+    ["plugins/design/skills/user-types/references/file-format.md",
+     "plugins/design/skills/tool-for-users/references/file-format.md"],
+    ["plugins/workflow/skills/to-tickets/no-tracker-doc.md", "plugins/workflow/skills/wayfinder/no-tracker-doc.md",
+     "plugins/workflow/skills/build-this/no-tracker-doc.md"],
+]
 
 
 def problems(report):
@@ -48,7 +58,8 @@ def version_problems(plugin):
     base = git("show", f"origin/main:{rel}/.claude-plugin/plugin.json")
     if base.returncode != 0:  # new plugin, or origin/main not fetched
         return []
-    changed = git("diff", "--quiet", "origin/main", "--", rel).returncode != 0
+    changed = (git("diff", "--quiet", "origin/main", "--", rel).returncode != 0
+               or bool(git("ls-files", "--others", "--exclude-standard", "--", rel).stdout.strip()))
     if changed and json.loads(base.stdout).get("version") == version:
         return [f"{rel}: files changed since origin/main but version is still {version}; run scripts/bump {plugin.name}"]
     return []
@@ -56,7 +67,10 @@ def version_problems(plugin):
 
 def skill_problems(skill):
     rel = skill.relative_to(ROOT)
-    match = FRONTMATTER.match((skill / "SKILL.md").read_text(encoding="utf-8"))
+    skill_md = skill / "SKILL.md"
+    match = FRONTMATTER.match(skill_md.read_text(encoding="utf-8")) if skill_md.is_file() else None
+    if not match:
+        return [f"{rel}: SKILL.md is missing or has no frontmatter"]
     user_only = (yaml.safe_load(match.group(1)) or {}).get("disable-model-invocation") is True
     found = []
     meta_path = skill / "agents" / "openai.yaml"
@@ -73,8 +87,39 @@ def skill_problems(skill):
                          f"(disable-model-invocation is {user_only})")
     if skill.name in VENDORED and not (skill / "LICENSE").is_file():
         found.append(f"{rel}: copied from mattpocock/skills, keep its LICENSE")
-    if ROUTER.is_file() and skill.name != "which-skill" and skill.name not in ROUTER.read_text(encoding="utf-8"):
+    named = re.compile(rf"(?<![\w-]){re.escape(skill.name)}(?![\w-])")
+    if ROUTER.is_file() and skill.name != "which-skill" and not named.search(ROUTER.read_text(encoding="utf-8")):
         found.append(f"{rel}: not named in which-skill")
+    return found
+
+
+def cli_problems(target):
+    """Problems from `claude plugin validate --strict` on one target."""
+    try:
+        run = subprocess.run(["claude", "plugin", "validate", "--strict", "--json", str(target)],
+                             capture_output=True, text=True)
+    except FileNotFoundError:
+        return ["the claude CLI is not installed or not on PATH"]
+    try:
+        report = json.loads(run.stdout)
+    except json.JSONDecodeError:
+        return [f"claude plugin validate printed no JSON (exit {run.returncode}): {(run.stderr or run.stdout).strip()[:300]}"]
+    found = list(problems(report))
+    if (run.returncode != 0 or report.get("success") is False) and not found:
+        found.append(f"claude plugin validate failed (exit {run.returncode}, success {report.get('success')})")
+    return found
+
+
+def repo_problems():
+    found = []
+    build = subprocess.run([sys.executable, str(ROOT / "scripts" / "build-marketplace"), "--check"],
+                           capture_output=True, text=True)
+    if build.returncode != 0:
+        found.append(build.stderr.strip())
+    for group in PAIRED:
+        texts = {rel: (ROOT / rel).read_bytes() if (ROOT / rel).is_file() else None for rel in group}
+        if None in texts.values() or len(set(texts.values())) > 1:
+            found.append("these copies must be identical (edit all of them): " + ", ".join(group))
     return found
 
 
@@ -82,10 +127,10 @@ def main():
     plugins = sorted(p for p in (ROOT / "plugins").glob("*") if p.is_dir())
     failed = False
     for target in [ROOT] + plugins:
-        out = subprocess.run(["claude", "plugin", "validate", "--json", str(target)],
-                             capture_output=True, text=True).stdout
-        found = list(problems(json.loads(out)))
-        if target != ROOT:
+        found = cli_problems(target)
+        if target == ROOT:
+            found += repo_problems()
+        else:
             found += version_problems(target)
             for skill in sorted(p for p in (target / "skills").glob("*") if p.is_dir()):
                 found += skill_problems(skill)

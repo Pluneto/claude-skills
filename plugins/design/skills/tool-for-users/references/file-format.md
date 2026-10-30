@@ -1,3 +1,4 @@
+<!-- Kept identical in user-types/ and tool-for-users/ (scripts/validate checks it): edit both copies. -->
 # UX file format
 
 Shared by the **user-types** and **tool-for-users** skills. `scripts/ux.py` parses exactly this format, so keep headings, IDs, table columns and `ux:` markers as shown. Wording inside cells is free.

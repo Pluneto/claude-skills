@@ -1,6 +1,6 @@
 ---
 name: "solve-this"
-description: Solve a task end to end on autopilot with minimal user input, then prove it is solved. Runs /plan-this and /build-this without asking the user anything, keeps diagnosing and retrying until the result passes its checks, and stops with one report containing evidence. Use when the user says "/solve-this", "solve this", "just do it", "handle this end to end", "autopilot", or hands over a goal and wants no interview, approvals or check-ins, even if they don't name the skill. Not for goals where the user wants to steer decisions (use /plan-this).
+description: Solve a task end to end on autopilot with minimal user input, then prove it is solved. Runs /plan-this and /build-this without asking the user anything, keeps diagnosing and retrying until the result passes its checks, and stops with one report containing evidence. Use when the user says "/solve-this", "solve this", "handle this end to end", "autopilot", or hands over a goal and wants no interview, approvals or check-ins, even if they don't name the skill. Not for goals where the user wants to steer decisions (use /plan-this).
 compatibility: Requires the plan-this, interview, build-this and research-this skills. The use-available-skills skill and a sub-agent tool (the Agent tool in Claude Code) are optional (skill discovery; independent verification).
 ---
 
@@ -23,7 +23,7 @@ Run /plan-this with these changes:
 
 ## 2. Build
 
-Run /build-this on the plan file, choosing **build straight through** yourself and skipping its model question and up-front collection (use placeholders; secrets by variable name only). Tick milestones off in the plan file as their checks pass. /build-this loads each milestone's skills itself; don't add steps for that.
+Run /build-this on the plan file, choosing **build straight through** yourself and skipping its model question and up-front collection (use placeholders; secrets by variable name only). Run it through its step 4 (Build) only: its step 5 (Finish) runs once, in this skill's step 5, after the proof. Tick milestones off in the plan file as their checks pass. /build-this loads each milestone's skills itself; don't add steps for that.
 
 ## 3. Keep going until solved
 
@@ -40,11 +40,11 @@ Stop when every check passes, only user-only or hard-stop items remain (as defin
 Don't claim success without evidence.
 - Re-run every success check fresh, after the last change.
 - If you can start sub-agents, have a fresh sub-agent run the checks against the result using only the plan's goal and checks, so it can't grade your work generously. Fix and loop to step 3 on any failure.
-- Capture the proof: for each check, what was run, the actual output (trimmed), and pass or fail. Save it as `proof-<short-topic>.md` next to the plan and send it with the deliverables.
+- Capture the proof: for each check, what was run, the actual output (trimmed), and pass or fail. Save it as `proof-<short-topic>.md` next to the plan file, before anything moves the plan, and send it with the deliverables.
 
 ## 5. Report and stop
 
-Use /build-this's finish report, plus:
+Run /build-this's step 5 (Finish) now: its review, then archiving the plan (move the proof file with it, to `plans/archive/`), then its one report, plus:
 - **Proof:** a verdict of **Solved**, **Partly solved** or **Not solved**, with the check table. A check that couldn't be run, or only passed by assumption, counts as unproven and is listed as such.
 - **Assumptions I made for you:** the autopilot defaults, and whether use-available-skills was missing (so no skills were looked up).
 

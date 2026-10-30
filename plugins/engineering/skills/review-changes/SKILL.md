@@ -3,7 +3,7 @@ name: review-changes
 description: "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the plan, ticket or spec asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \"review since X\"."
 ---
 
-Two-axis review of the diff between `HEAD` and a fixed point the caller or user supplies:
+Two-axis review of the changes since a fixed point the caller or user supplies, committed and uncommitted:
 
 - **Standards**: does the code conform to this repo's documented coding standards?
 - **Spec**: does the code faithfully implement the originating plan, ticket or spec?
@@ -20,9 +20,9 @@ Tickets live where `docs/agents/issue-tracker.md` says. Without it, look for loc
 
 The fixed point is whatever the caller passed or the user said (a commit SHA, branch name, tag, `main`, `HEAD~5`, etc.). If neither gave one, ask for it.
 
-Capture the diff command once: `git diff <fixed-point>...HEAD` (three-dot, so the comparison is against the merge-base). Also note the list of commits via `git log <fixed-point>..HEAD --oneline`.
+Capture the diff command once. When `git status --porcelain` is empty, it is `git diff <fixed-point>...HEAD` (three-dot, so the comparison is against the merge-base). When the tree has uncommitted work (build-this leaves its changes uncommitted), run `git add -N .` so untracked files show up, and use `git diff $(git merge-base <fixed-point> HEAD)`: the merge-base against the working tree, committed and uncommitted changes together. Pass that exact command to both sub-agents. Also note the list of commits via `git log <fixed-point>..HEAD --oneline`.
 
-Before going further, confirm the fixed point resolves (`git rev-parse <fixed-point>`) and the diff is non-empty. A bad ref or empty diff should fail here, not inside two parallel sub-agents.
+Before going further, confirm the fixed point resolves (`git rev-parse <fixed-point>`) and the captured diff is non-empty. A bad ref or empty diff should fail here, not inside two parallel sub-agents.
 
 ### 2. Identify the spec source
 

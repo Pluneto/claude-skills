@@ -2,7 +2,7 @@
 
 These are patterns from a single redesign. Treat them as options to consider, not rules: pick the form that fits the data, product and audience (donut vs bar, map vs table, tabs vs sections, modal vs flyout, plan count and naming, palette).
 
-Source: "5 SaaS UI/UX mistakes that SCREAM you Vibe Code" (YouTube PDcQJOPby1k), redesign of a vibecoded URL shortener ("LinkGuard"). Full notes: `analyses/5-saas-ui-ux-mistakes-that-scream-you-vibe-code.md` in the yt-vid-analyzer project. Observations from the video, not independently verified.
+Source: "5 SaaS UI/UX mistakes that SCREAM you Vibe Code" (https://www.youtube.com/watch?v=PDcQJOPby1k), redesign of a vibecoded URL shortener ("LinkGuard"). These notes are everything this skill has from it. Observations from the video, not independently verified.
 
 ## Before -> after
 - Emoji icons (check, clipboard, eye, calendar, link) -> thin line icons.

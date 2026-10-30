@@ -1,6 +1,6 @@
 ---
 name: "build-this"
-description: Carry out an agreed plan from start to finish, milestone by milestone, without re-opening the user's decisions. Use whenever the user says "build this", "/build-this", "build this plan", "build it", attaches or points to a plan-*.md file or a tickets folder, or when /plan-this hands off after planning. If there is no plan at all and the goal is big, offer /plan-this in one line first.
+description: Carry out an agreed plan from start to finish, milestone by milestone, without re-opening the user's decisions. Use whenever the user says "build this", "/build-this", "build this plan", attaches or points to a plan-*.md file or a tickets folder, or when /plan-this hands off after planning. If there is no plan at all and the goal is big, offer /plan-this in one line first.
 ---
 
 # Build this
@@ -15,10 +15,10 @@ Use the first of these that exists:
 
 1. **The plan agreed earlier in this conversation** (the usual case when /plan-this hands off): the deepened goal, decisions, milestones and checks from its confirmed summary.
 2. **A plan file** passed as the skill's argument, attached, or in the project (`plans/plan-*.md`, or `plan-*.md` in the root). Read all of it.
-3. **Tickets from /to-tickets**: a folder (`plans/<feature>/tickets/`) or an issue list, worked by `docs/agents/issue-tracker.md` (its Claim, Release and Parallel work sections). Each ticket is a milestone and its acceptance criteria are its done-when check. Work them in blocker order (a ticket starts once every ticket in its `Blocked by` is done).
+3. **Tickets from /to-tickets**: a folder (`plans/<feature>/tickets/`) or an issue list, worked by `docs/agents/issue-tracker.md` (its Claim, Release and Parallel work sections), or, when the repo has none, by the defaults in [no-tracker-doc.md](no-tracker-doc.md). Each ticket is a milestone and its acceptance criteria are its done-when check. Work them in blocker order (a ticket starts once every ticket in its `Blocked by` is done).
    - **Human tickets** (the human label, or `Who: human`) are the user's: skip them, keep working every agent ticket they don't block, and list them in the report with what each needs.
    - **Claim** each ticket before its first change, as the tracker doc's Claim says. When the claim is lost, another worker holds it: leave that ticket and the tickets it blocks, and report the winning claim.
-   - **Finish** each ticket when its check passes. On GitHub, open the PR with `Fixes #<n>` in its body and land it with the doc's Land command (polling its status command), or, when the field is blank, by its fallback; then release as in its Release (Done). Locally, set `Status: resolved`.
+   - **Finish** each ticket when its check passes. On GitHub, open the PR with `Fixes #<n>` in its body and wait for green CI. Merging publishes, so land it (the doc's Land command, polling its status command, or the blank field's fallback) only when the user said so, for example "merge if green" with the build mode; then release as in the doc's Release (Done). Without that go-ahead, list the green PRs under "What's left for you" and keep the claims: the open PRs hold the tickets. Locally, set `Status: resolved`.
 4. **A plan the user wrote themselves**, in a message or a document.
 
 If there's no plan, look at the size of the request. Small and clear: just build it, treating the request as a one-milestone plan. Big or ambiguous: offer /plan-this in one line (*"This has a lot of open choices. Want to plan it first with /plan-this, or should I just build with sensible defaults?"*) and go with their answer.

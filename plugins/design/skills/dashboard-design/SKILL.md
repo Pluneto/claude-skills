@@ -64,7 +64,7 @@ Vibecoded dashboards share tells that read as untrustworthy. AI wires up logic w
 - **Landing pages** are where trust is won: same color and layout rules, with real product graphics over generic icons.
 Concrete patterns that worked in one case, offered as optional recipes: `references/saas-redesign-lessons.md`.
 
-## Beyond the video
+## Accessibility and states
 - Hover-only actions need keyboard and touch equivalents: reveal on `:focus-within` too, and provide a menu or long-press/swipe path on touch.
 - Every view needs designed empty, loading, and error states.
 - Color is never the only signal: pair status colors with an icon or label.

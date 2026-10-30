@@ -21,7 +21,7 @@ Ask each named choice with the question tool (AskUserQuestion in Claude Code; a 
 
 Run `ux.py status`, then:
 
-- **Called by another skill** with `mode=create` or `mode=append names="A; B"`: skip the menus. Go straight to 1A (create) or Append (with those names), then follow "Handing back".
+- **Called by another skill** with `mode=create` or `mode=append names="A; B"`: skip the 1B menu. Go straight to 1A (create, taking option A without asking) or Append (with those names), then follow "Handing back".
 - **Alternative filename** reported (for example `UX/User_Type.md`): ask whether to rename it to `UX/User_Types.md` and continue with it. Do this before anything else.
 - **File missing**: go to 1A.
 - **File present**: go to 1B.
@@ -120,7 +120,7 @@ Write nothing until the review is finished. The user should never discover a typ
 1. If the file is missing, run `ux.py init`.
 2. Add each approved type as a section, in ID order, in the exact format from file-format.md. Take IDs from `status`.
 3. Run `ux.py sync`. It rebuilds the index, the mapped-features blocks and the ID tracker.
-4. Run `ux.py check`. Fix every ERROR and run it again until it reports none.
+4. Run `ux.py check`. Fix every ERROR in `UX/User_Types.md` and run it again until none are left there. ERRORs in `UX/tools/` docs from a dropped type or requirement are expected: list them for the tool-for-users re-run you offer (Edit step 6, Remake step 6) rather than editing tool docs yourself.
 5. Report in a short list: ID · name · access level for each type added or changed, plus the file path.
 
 ## Handing back

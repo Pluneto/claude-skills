@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 # Human-in-the-loop reproduction loop.
-# Copy this file, edit the steps below, and run it.
-# The agent runs the script; the user follows prompts in their terminal.
+# The agent copies this file into the repo and edits the steps below; the
+# user runs it in their own terminal (it reads from a TTY, so it can't run
+# from the agent's shell) and pastes the KEY=VALUE block back.
 #
-# Usage:
-#   bash hitl-loop.template.sh
+# Usage (in Claude Code, the user types this at the prompt):
+#   ! bash <path-to-your-copy>.sh
 #
 # Two helpers:
 #   step "<instruction>"          → show instruction, wait for Enter

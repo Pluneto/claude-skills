@@ -1,16 +1,25 @@
 #!/usr/bin/env python3
 """Bump a plugin's version: scripts/bump <plugin> [major|minor|patch] (default patch)."""
 import json
+import re
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+PARTS = ("major", "minor", "patch")
 
 
 def main(plugin, part="patch"):
     path = ROOT / "plugins" / plugin / ".claude-plugin" / "plugin.json"
+    if part not in PARTS:
+        sys.exit(f"bump: part must be one of {', '.join(PARTS)}, not '{part}'\n{__doc__}")
+    if not path.is_file():
+        sys.exit(f"bump: no plugin '{plugin}' (missing {path.relative_to(ROOT)})")
     manifest = json.loads(path.read_text(encoding="utf-8"))
-    major, minor, patch = map(int, manifest.get("version", "0.0.0").split("."))
+    version = manifest.get("version", "0.0.0")
+    if not re.fullmatch(r"\d+\.\d+\.\d+", version):
+        sys.exit(f"bump: {plugin} has version '{version}'; only MAJOR.MINOR.PATCH can be bumped, edit it by hand")
+    major, minor, patch = map(int, version.split("."))
     major, minor, patch = {"major": (major + 1, 0, 0), "minor": (major, minor + 1, 0),
                            "patch": (major, minor, patch + 1)}[part]
     manifest["version"] = f"{major}.{minor}.{patch}"

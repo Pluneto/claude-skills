@@ -56,7 +56,7 @@ Break the tool into features:
 
 ## Step 4: Map and check coverage
 
-1. Run `ux.py init-tool <slug> "<Name>"`. Skip this when updating an existing doc.
+1. Run `ux.py init-tool <slug> "<Name>"`, with `--force` when the user chose **Replace it** (the doc starts over, and its feature and journey IDs restart at 01, since they are per doc). Skip this when updating an existing doc.
 2. Fill in Summary, Features and the Feature map:
    - The map has one column per user-type, headed `UT-NN Name`.
    - Mark each cell P (primary user), S (secondary user) or leave it blank.

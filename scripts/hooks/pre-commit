@@ -1,16 +1,25 @@
 #!/usr/bin/env bash
-# Regenerate the marketplace and validate it before every commit.
+# Check the marketplace and validate it before every commit.
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
-# The repo is public: refuse personal author emails.
-email=$(git var GIT_AUTHOR_IDENT | sed -n 's/.*<\(.*\)>.*/\1/p')
-if [[ "$email" != *@users.noreply.github.com ]]; then
-    echo "pre-commit: author email '$email' is not a GitHub noreply address." >&2
-    echo "  git config user.email <id>+<user>@users.noreply.github.com" >&2
+# The repo is public: refuse personal author and committer emails.
+for ident in GIT_AUTHOR_IDENT GIT_COMMITTER_IDENT; do
+    email=$(git var "$ident" | sed -n 's/.*<\(.*\)>.*/\1/p')
+    if [[ "$email" != *@users.noreply.github.com ]]; then
+        echo "pre-commit: ${ident%_IDENT} email '$email' is not a GitHub noreply address." >&2
+        echo "  git config user.email <id>+<user>@users.noreply.github.com" >&2
+        exit 1
+    fi
+done
+
+# The checks read the working tree, so it must match what is being committed.
+checked=(.claude-plugin plugins scripts)
+if ! git diff --quiet -- "${checked[@]}" || [[ -n "$(git ls-files --others --exclude-standard -- "${checked[@]}")" ]]; then
+    echo "pre-commit: unstaged or untracked changes under ${checked[*]}; stage or stash them first:" >&2
+    git status --short -- "${checked[@]}" | grep -v '^[MADR] ' >&2 || true
     exit 1
 fi
 
-scripts/build-marketplace
-git add .claude-plugin/marketplace.json plugins/*/.claude-plugin/plugin.json
+scripts/build-marketplace --check
 scripts/validate

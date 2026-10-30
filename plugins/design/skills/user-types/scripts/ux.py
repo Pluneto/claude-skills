@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Kept identical in user-types/ and tool-for-users/ (scripts/validate checks it): edit both copies.
 """ux.py - deterministic helper shared by the user-types and tool-for-users skills.
 
 Run from the repository root (or pass --root PATH). Python 3.8+, standard library only.

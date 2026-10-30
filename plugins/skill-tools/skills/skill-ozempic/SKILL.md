@@ -52,4 +52,4 @@ The user accepts, rejects or modifies each number ("all but 3", "2 only if you k
 
 ### 5. Hand off to skill-updater
 
-Once every suggestion has a decision, invoke skill-updater with: the skill name, the confirmed purpose, and the accepted cuts spelled out precisely enough to apply without guessing (including any modifications the user asked for). Say these are already approved, so skill-updater applies them without another approval round. skill-updater handles the edit and delivery, so don't edit the skill yourself, and don't run tests or benchmarks.
+Once every suggestion has a decision, invoke skill-updater with: the skill name, the confirmed purpose, and the accepted cuts spelled out precisely enough to apply without guessing (including any modifications the user asked for). Say these are already approved, so skill-updater applies them without another approval round (a commit or push still needs the user's yes). skill-updater handles the edit and delivery, so don't edit the skill yourself, and don't run tests or benchmarks.

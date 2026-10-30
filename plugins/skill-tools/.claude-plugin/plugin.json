@@ -1,6 +1,6 @@
 {
   "name": "skill-tools",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Write and maintain skills: writing-for-agents, skill-updater, skill-ozempic and the end-of-session reflect retro.",
   "author": {
     "name": "Pluneto"

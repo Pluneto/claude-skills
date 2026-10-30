@@ -67,8 +67,6 @@ Publish the approved tickets. **How** depends on the tracker (see Tracker above)
 - **Local files** → write one file per ticket under `plans/<feature-slug>/tickets/<NN>-<slug>.md`, numbered from `01` in dependency order (blockers first). Each file's `Who:` line says agent or human, and its `Blocked by:` lists the numbers it depends on. Use the per-ticket file template below: one ticket per file, never a single combined file.
 - **GitHub Issues** → publish one issue per ticket in dependency order (blockers first) so each ticket's blocking edges can reference real issue numbers. Give each issue the tracker doc's agent or human label, and use native blocking (the tracker doc's **Blocking**), falling back to the "Blocked by" section only where it isn't available. If the source was an existing issue, make each ticket its sub-issue (tracker doc's operation).
 
-Work the **frontier**: any ticket whose blockers are all done. For a purely linear chain that means top to bottom.
-
 Do NOT close or modify any parent issue.
 
 Finish with the published list (number or file, title, agent/human, blocked by) and the exact line to run next:
