@@ -17,7 +17,7 @@ A **flow** is a path through the skills. Most work travels the **main flow**; **
 1. **`/plan-this`** (workflow) deepens the goal the way a top professional would, researches what already exists (research-this), interviews you over a design tree (interview), and saves a plan with milestones and checks.
 2. **Branch: is this a multi-session build?**
    - **No** (the usual case) → **`/build-this`** works the plan milestone by milestone.
-   - **Yes** → **`/to-tickets`** (workflow) splits the saved plan into tracer-bullet tickets with blocking edges (local files under `plans/<feature>/tickets/`, or GitHub Issues if setup switched them on), then **`/build-this`** works the tickets in blocker order, one session or several.
+   - **Yes** → **`/to-tickets`** (workflow) splits the saved plan into tracer-bullet tickets with blocking edges (local files under `plans/<feature>/tickets/`, or GitHub Issues, as the repo's tracker doc says), then **`/build-this`** works the tickets in blocker order, one session or several.
    - **Want it done with no questions?** → **`/solve-this`** runs plan-this and build-this on autopilot, retries until the checks pass, and proves it.
 3. While building, code gets written test-first with **tdd** (engineering) when the milestone calls for it, and build-this closes with **review-changes** (engineering): a two-axis review (Standards from `CODING_STANDARDS.md`, Spec from the plan or ticket) of the diff. Use **`/review-changes`** on its own to review any branch or PR since a fixed point. **pr** (engineering) shapes the PR body when the work goes up as a pull request.
 4. **`/reflect`** (skill-tools) closes the loop, in the same session: it finds what caused friction and applies up to five lean fixes to notes, skills, checks or coding standards, so the next build starts further ahead.
@@ -63,4 +63,4 @@ At the boundary between two phases (planning → building, building → review) 
 
 ## Precondition
 
-**`/setup:setup-pluneto-skills`** (setup, installed once at user scope): installs and repairs the plugins in a repo, configures the tracker (local `plans/` files by default, GitHub Issues on request) and writes the CLAUDE.md block.
+**`/setup:setup-pluneto-skills`** (setup, installed once at user scope): installs and repairs the plugins in a repo, configures the tracker (GitHub Issues or local `plans/` files) and writes the CLAUDE.md block.
