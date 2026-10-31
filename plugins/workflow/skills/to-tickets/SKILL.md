@@ -71,7 +71,7 @@ Do NOT close or modify any parent issue.
 
 Finish with the published list (number or file, title, agent/human, blocked by) and the exact line to run next:
 
-- `/build-this <tickets folder>` or `/build-this issues #<first>-#<last>`: one session works them in blocker order, skipping human tickets.
+- `/build-this <tickets folder>` or `/build-this issues <first>-<last>` (bare numbers: T3's composer turns a typed `#<n>` into a pull-request chip): one session works them in blocker order, skipping human tickets.
 - On GitHub, when two or more agent tickets can run at the same time, also offer `/dispatch`: it groups them into waves of parallel workers.
 
 <local-ticket-template>
